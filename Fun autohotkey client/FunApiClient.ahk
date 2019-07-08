@@ -1,4 +1,5 @@
 IniRead, ServerAdress, %A_ScriptDir%\FunApiClientConfig.ini, Server, ServerAdress
+IniRead, ApiKey, %A_ScriptDir%\FunApiClientConfig.ini, Server, ApiKey
 
 IniRead, MediaFile1, %A_ScriptDir%\FunApiClientConfig.ini, Media, MediaFile1
 IniRead, MediaFile2, %A_ScriptDir%\FunApiClientConfig.ini, Media, MediaFile2
@@ -52,8 +53,10 @@ PlayMedia(file) {
 }
 
 HttpGet(url) {
+    global ApiKey
 	static req := ComObjCreate("Msxml2.XMLHTTP")
 	req.open("GET", url, false)
 	req.SetRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT")
+    req.SetRequestHeader("X-API-KEY", ApiKey)
 	req.send()
 }
