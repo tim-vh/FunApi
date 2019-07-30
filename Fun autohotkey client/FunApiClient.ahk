@@ -47,9 +47,17 @@ return
     PlayMedia(MediaFile9)
 return
 
+^!Numpad0::
+	StopMedia()
+return
+
 PlayMedia(file) {
     global ServerAdress
     HttpGet(ServerAdress "/api/media/play/" file)
+}
+StopMedia() {
+    global ServerAdress
+    HttpGet(ServerAdress "/api/media/stop")
 }
 
 HttpGet(url) {

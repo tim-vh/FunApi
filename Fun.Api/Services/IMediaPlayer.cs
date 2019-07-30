@@ -3,5 +3,6 @@
     public interface IMediaPlayer
     {
         void Play(string fileName);
+        void Stop();
     }
 }
