@@ -26,5 +26,13 @@ namespace Fun.Api.Services
                 _currentProcess.Start();
             }
         }
+
+        public void Stop()
+        {
+            if (_currentProcess != null && !_currentProcess.HasExited)
+            {
+                _currentProcess.Kill();
+            }
+        }
     }
 }

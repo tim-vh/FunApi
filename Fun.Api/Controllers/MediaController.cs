@@ -23,5 +23,13 @@ namespace Fun.Api.Controllers
 
             return Ok();
         }
+
+
+        [HttpGet("stop")]
+        public ActionResult Get()
+        {
+            _mediaPlayer.Stop();
+            return Ok();
+        }
     }
 }
