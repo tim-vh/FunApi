@@ -1,4 +1,5 @@
 ﻿using Fun.Api.Services;
+using Fun.Api.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,18 +11,25 @@ namespace Fun.Api.Controllers
     public class MediaController : ControllerBase
     {
         private readonly IMediaPlayer _mediaPlayer;
+        private readonly IMediaFileNameValidator _mediaFileNameValidator;
 
-        public MediaController(IMediaPlayer mediaPlayer)
+        public MediaController(IMediaPlayer mediaPlayer, IMediaFileNameValidator mediaFileNameValidator)
         {
             _mediaPlayer = mediaPlayer;
+            _mediaFileNameValidator = mediaFileNameValidator;
         }
 
         [HttpGet("play/{fileName}")]
         public ActionResult Get(string fileName)
         {
-            _mediaPlayer.Play(fileName);
+            if (_mediaFileNameValidator.Validate(fileName))
+            {
+                _mediaPlayer.Play(fileName);
 
-            return Ok();
+                return Ok();
+            }
+
+            return NotFound();
         }
 
 

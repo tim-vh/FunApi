@@ -1,4 +1,5 @@
 ﻿using Fun.Api.Services;
+using Fun.Api.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +26,7 @@ namespace Fun.Api
             services.Configure<Settings>(Configuration.GetSection("FunApi"));
             services.AddSingleton(r => r.GetRequiredService<IOptions<Settings>>().Value);
             services.AddSingleton<IMediaPlayer, VlcMediaPlayer>();
+            services.AddSingleton<IMediaFileNameValidator, MediaFileNameValidator>();
 
             services.AddTransient<IAuthorizationHandler, ApiKeyRequirementHandler>();
             services.AddAuthorization(authConfig =>
