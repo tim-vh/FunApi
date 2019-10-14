@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Fun.Api.Services
 {
@@ -7,6 +9,9 @@ namespace Fun.Api.Services
     {
         private static Process _currentProcess;
         private readonly Settings _settings;
+
+        [DllImport("User32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr handle);
 
         public VlcMediaPlayer(Settings settings)
         {
@@ -24,6 +29,8 @@ namespace Fun.Api.Services
                 _currentProcess.StartInfo.Arguments = $"{mediaFileFullPath} --fullscreen vlc://quit";
 
                 _currentProcess.Start();
+
+                SetForegroundWindow(_currentProcess.Handle);
             }
         }
 
