@@ -12,6 +12,8 @@ namespace Fun.Api
 {
     public class Startup
     {
+        private readonly string FunApiCorsPolicy = "FunApiCorsPolicy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,6 +24,13 @@ namespace Fun.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => options.AddPolicy(FunApiCorsPolicy, builder =>
+            {
+                builder.WithOrigins("*")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+            }));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.Configure<Settings>(Configuration.GetSection("FunApi"));
             services.AddSingleton(r => r.GetRequiredService<IOptions<Settings>>().Value);
@@ -43,6 +52,8 @@ namespace Fun.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(FunApiCorsPolicy);
 
             app.UseMvc();
         }
