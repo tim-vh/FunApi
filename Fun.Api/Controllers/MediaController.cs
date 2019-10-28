@@ -12,15 +12,20 @@ namespace Fun.Api.Controllers
     {
         private readonly IMediaPlayer _mediaPlayer;
         private readonly IMediaFileNameValidator _mediaFileNameValidator;
+        private readonly IDirectoryService _directoryService;
 
-        public MediaController(IMediaPlayer mediaPlayer, IMediaFileNameValidator mediaFileNameValidator)
+        public MediaController(
+            IMediaPlayer mediaPlayer,
+            IMediaFileNameValidator mediaFileNameValidator,
+            IDirectoryService directoryService)
         {
             _mediaPlayer = mediaPlayer;
             _mediaFileNameValidator = mediaFileNameValidator;
+            _directoryService = directoryService;
         }
 
         [HttpGet("play/{fileName}")]
-        public ActionResult Get(string fileName)
+        public ActionResult Play(string fileName)
         {
             if (_mediaFileNameValidator.Validate(fileName))
             {
@@ -32,12 +37,18 @@ namespace Fun.Api.Controllers
             return NotFound();
         }
 
-
         [HttpGet("stop")]
-        public ActionResult Get()
+        public ActionResult Stop()
         {
             _mediaPlayer.Stop();
             return Ok();
+        }
+
+        [HttpGet("list")]
+        public ActionResult List()
+        {
+            var fileNames = _directoryService.GetMediaFileNames();
+            return new JsonResult(fileNames);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fun.Api.Services;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -6,17 +7,16 @@ namespace Fun.Api.Validators
 {
     public class MediaFileNameValidator : IMediaFileNameValidator
     {
-        private readonly Settings _settings;
+        private readonly IDirectoryService _directoryService;
 
-        public MediaFileNameValidator(Settings settings)
+        public MediaFileNameValidator(IDirectoryService directoryService)
         {
-            _settings = settings;
+            _directoryService = directoryService;
         }
 
         public bool Validate(string fileName)
         {
-            var files = Directory.GetFiles(_settings.MediaBasePath);
-            var fileNames = files.Select(f => Path.GetFileName(f));
+            var fileNames = _directoryService.GetMediaFileNames();
             return fileNames.Contains(fileName);
         }
     }
