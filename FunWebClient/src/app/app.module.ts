@@ -26,8 +26,7 @@ import { MediaDetailsGuardService } from './media/media-details-guard.service';
     FormsModule
   ],
   providers: [FunApiProvider, MediaDetailsGuardService],
-  bootstrap: [AppComponent],
-  //entryComponents: [AppComponent, MediaDetails]
+  bootstrap: [AppComponent]
 })
 export class AppModule {
   constructor(private injector: Injector)
@@ -35,17 +34,5 @@ export class AppModule {
 
   }
 
-  ngDoBootstrap() {
-    // const app = createCustomElement(AppComponent, {
-    //   injector: this.injector, 
-    // });
-
-    // customElements.define('app-root', app);
-
-    // const mediaDetails = createCustomElement(MediaDetails, {
-    //   injector: this.injector
-    // });
-
-    // customElements.define('media-details', mediaDetails);
-  }
+  ngDoBootstrap() {}
 }
