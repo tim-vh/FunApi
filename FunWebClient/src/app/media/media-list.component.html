@@ -1,0 +1,15 @@
+<h1>Fun client</h1>
+
+<input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="fileFilter" [ngbTypeahead]="search"/>
+
+<table class="table">
+    <tr *ngFor="let file of files">
+        <td>{{file}}</td>
+        <td>
+            <button class="btn btn-primary" (click)="play(file)">Play</button>
+        </td>      
+        <td>
+            <button class="btn btn-secondary" [routerLink]="['/details', file]">Details</button>
+        </td>
+    </tr>
+</table>
