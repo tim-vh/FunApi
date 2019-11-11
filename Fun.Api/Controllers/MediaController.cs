@@ -7,7 +7,7 @@ namespace Fun.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "ApiKeyPolicy")]
+    [Authorize]
     public class MediaController : ControllerBase
     {
         private readonly IMediaPlayer _mediaPlayer;

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
 
 namespace Fun.Api
 {
@@ -31,22 +32,22 @@ namespace Fun.Api
                         .AllowAnyHeader();
             }));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.Configure<Settings>(Configuration.GetSection("FunApi"));
             services.AddSingleton(r => r.GetRequiredService<IOptions<Settings>>().Value);
             services.AddSingleton<IMediaPlayer, VlcMediaPlayer>();
             services.AddScoped<IMediaFileNameValidator, MediaFileNameValidator>();
             services.AddScoped<IDirectoryService, DirectoryService>();
 
-            services.AddTransient<IAuthorizationHandler, ApiKeyRequirementHandler>();
-            services.AddAuthorization(authConfig =>
+            services.AddAuthentication(options =>
             {
-                authConfig.AddPolicy("ApiKeyPolicy", policyBuilder => policyBuilder.AddRequirements(new ApiKeyRequirement()));
-            });
+                options.DefaultAuthenticateScheme = ApiKeyAuthenticationOptions.DefaultScheme;
+                options.DefaultChallengeScheme = ApiKeyAuthenticationOptions.DefaultScheme;
+            }).AddApiKeySupport(options => { });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -55,7 +56,15 @@ namespace Fun.Api
 
             app.UseCors(FunApiCorsPolicy);
 
-            app.UseMvc();
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
