@@ -11,6 +11,10 @@ IniRead, MediaFile7, %A_ScriptDir%\FunApiClientConfig.ini, Media, MediaFile7
 IniRead, MediaFile8, %A_ScriptDir%\FunApiClientConfig.ini, Media, MediaFile8
 IniRead, MediaFile9, %A_ScriptDir%\FunApiClientConfig.ini, Media, MediaFile9
 
+^!/::    
+    MsgBox 0, Media files, 1: %MediaFile1% `n2: %MediaFile2% `n3: %MediaFile3% `n4: %MediaFile4% `n5: %MediaFile5% `n6: %MediaFile6% `n7: %MediaFile7% `n8: %MediaFile8% `n9: %MediaFile9%
+return
+
 ^!F1::
     IniRead, MediaFile1, %A_ScriptDir%\FunApiClientConfig.ini, Media, MediaFile1
     IniRead, MediaFile2, %A_ScriptDir%\FunApiClientConfig.ini, Media, MediaFile2
