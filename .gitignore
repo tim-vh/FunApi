@@ -349,3 +349,7 @@ healthchecksdb
 MigrationBackup/
 
 *.Development.json
+
+# exe file
+
+*.exe
