@@ -51,6 +51,46 @@ return
 	StopMedia()
 return
 
+^!1::
+    PlayMedia(MediaFile1)
+return
+
+^!2::
+    PlayMedia(MediaFile2)
+return
+
+^!3::
+    PlayMedia(MediaFile3)
+return
+
+^!4::
+    PlayMedia(MediaFile4)
+return
+
+^!5::
+    PlayMedia(MediaFile5)
+return
+
+^!6::
+    PlayMedia(MediaFile6)
+return
+
+^!7::
+    PlayMedia(MediaFile7)
+return
+
+^!8::
+    PlayMedia(MediaFile8)
+return
+
+^!9::
+    PlayMedia(MediaFile9)
+return
+
+^!0::
+	StopMedia()
+return
+
 PlayMedia(file) {
     global ServerAdress
     HttpGet(ServerAdress "/api/media/play/" file)
