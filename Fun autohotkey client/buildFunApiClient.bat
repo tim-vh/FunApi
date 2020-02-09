@@ -1,1 +1,1 @@
-"C:\Program Files\AutoHotkey\Compiler\ahk2exe.exe" /in FunApiClient.ahk
+"C:\Program Files\AutoHotkey\Compiler\ahk2exe.exe" /in "FunApiClient.ahk" /icon "funny.ico"

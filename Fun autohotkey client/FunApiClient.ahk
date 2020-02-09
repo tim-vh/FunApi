@@ -1,5 +1,3 @@
-Menu, Tray, icon, funny.ico
-
 IniRead, ServerAdress, %A_ScriptDir%\FunApiClientConfig.ini, Server, ServerAdress
 IniRead, ApiKey, %A_ScriptDir%\FunApiClientConfig.ini, Server, ApiKey
 
