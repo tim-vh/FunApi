@@ -1,7 +1,5 @@
 pipeline{
-    agent {
-        docker { image 'mcr.microsoft.com/dotnet/core/sdk'}
-    }
+    agent any
     stages{
         stage('checkout') {
             steps {
