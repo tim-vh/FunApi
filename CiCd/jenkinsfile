@@ -3,12 +3,13 @@ pipeline{
     stages{
         stage('checkout') {
             steps {
+                cleanWs()
                 checkout scm
             }
         }
         stage("build"){
             steps{
-                echo "========executing Build========"
+                sh 'dotnet build'
             }
         }
     }    
