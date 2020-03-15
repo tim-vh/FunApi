@@ -1,4 +1,12 @@
 FROM jenkins/jenkins
+
+# Skip setup wizard
+ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+# COPY basic-security.groovy /var/lib/jenkins/init.groovy.d/basic-security.groovy
+
+# Create admin based on secrets jenkins-adm-name and jenkins-adm-pass
+COPY security.groovy /usr/share/jenkins/ref/init.groovy.d/security.groovy
+
 USER root
 
 # install dot net core sdk 3.1
