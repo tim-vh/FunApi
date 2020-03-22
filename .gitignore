@@ -350,6 +350,8 @@ MigrationBackup/
 
 *.Development.json
 
-# exe file
-
+# exe files
 *.exe
+
+# video folder
+Fun.Api/wwwroot/videos/*

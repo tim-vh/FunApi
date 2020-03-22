@@ -38,6 +38,7 @@ namespace Fun.Api
             services.AddSingleton<IMediaPlayer, VlcMediaPlayer>();
             services.AddScoped<IMediaFileNameValidator, MediaFileNameValidator>();
             services.AddScoped<IDirectoryService, DirectoryService>();
+            services.AddSignalR();
 
             services.AddAuthentication(options =>
             {
@@ -60,10 +61,12 @@ namespace Fun.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<VideoHub>("/videohub");
             });
         }
     }

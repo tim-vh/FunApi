@@ -2,6 +2,7 @@
 using Fun.Api.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Fun.Api.Controllers
 {
@@ -13,23 +14,26 @@ namespace Fun.Api.Controllers
         private readonly IMediaPlayer _mediaPlayer;
         private readonly IMediaFileNameValidator _mediaFileNameValidator;
         private readonly IDirectoryService _directoryService;
+        private readonly IHubContext<VideoHub> _videoHubContext;
 
         public MediaController(
             IMediaPlayer mediaPlayer,
             IMediaFileNameValidator mediaFileNameValidator,
-            IDirectoryService directoryService)
+            IDirectoryService directoryService,
+            IHubContext<VideoHub> videoHubContext)
         {
             _mediaPlayer = mediaPlayer;
             _mediaFileNameValidator = mediaFileNameValidator;
             _directoryService = directoryService;
+            _videoHubContext = videoHubContext;
         }
 
         [HttpGet("play/{fileName}")]
-        public ActionResult Play(string fileName)
+        public IActionResult Play(string fileName)
         {
             if (_mediaFileNameValidator.Validate(fileName))
             {
-                _mediaPlayer.Play(fileName);
+                _ = _videoHubContext.Clients.All.SendAsync("PlayVideo", fileName).ConfigureAwait(false);
 
                 return Ok();
             }
@@ -38,14 +42,15 @@ namespace Fun.Api.Controllers
         }
 
         [HttpGet("stop")]
-        public ActionResult Stop()
+        public IActionResult Stop()
         {
+            // todo send stop to clients
             _mediaPlayer.Stop();
             return Ok();
         }
 
         [HttpGet("list")]
-        public ActionResult List()
+        public IActionResult List()
         {
             var fileNames = _directoryService.GetMediaFileNames();
             return new JsonResult(fileNames);
