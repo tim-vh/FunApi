@@ -3,4 +3,10 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="wwwroot\videos\**" />
+    <Content Remove="wwwroot\videos\**" />
+    <EmbeddedResource Remove="wwwroot\videos\**" />
+    <None Remove="wwwroot\videos\**" />
+  </ItemGroup>
 </Project>
