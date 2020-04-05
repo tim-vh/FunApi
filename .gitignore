@@ -355,3 +355,6 @@ MigrationBackup/
 
 # video folder
 Fun.Api/wwwroot/videos/*
+
+# www root lib folder
+Fun.Api/wwwroot/lib/*
