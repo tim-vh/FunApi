@@ -31,9 +31,10 @@ namespace Fun.Api
                         .AllowAnyMethod()
                         .AllowAnyHeader();
             }));
-
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.Configure<Settings>(Configuration.GetSection("FunApi"));
+            services.AddSingleton(Configuration);
             services.AddSingleton(r => r.GetRequiredService<IOptions<Settings>>().Value);
             services.AddSingleton<IMediaPlayer, VlcMediaPlayer>();
             services.AddScoped<IMediaFileNameValidator, MediaFileNameValidator>();

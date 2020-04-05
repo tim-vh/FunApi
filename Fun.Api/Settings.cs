@@ -2,7 +2,7 @@
 {
     public class Settings
     {
-        public string MediaBasePath { get; set; }
+        public string MediaBasePath { get; set; } // TODO: remove
 
         public string VlcPath { get; set; }
 
