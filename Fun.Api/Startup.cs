@@ -1,6 +1,5 @@
 ﻿using Fun.Api.Services;
 using Fun.Api.Validators;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

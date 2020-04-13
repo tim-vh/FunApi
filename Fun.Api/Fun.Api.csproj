@@ -9,4 +9,7 @@
     <EmbeddedResource Remove="wwwroot\videos\**" />
     <None Remove="wwwroot\videos\**" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.1" />
+  </ItemGroup>
 </Project>
