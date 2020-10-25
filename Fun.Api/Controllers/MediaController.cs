@@ -11,18 +11,15 @@ namespace Fun.Api.Controllers
     [Authorize]
     public class MediaController : ControllerBase
     {
-        private readonly IMediaPlayer _mediaPlayer;
         private readonly IMediaFileNameValidator _mediaFileNameValidator;
         private readonly IDirectoryService _directoryService;
         private readonly IHubContext<VideoHub> _videoHubContext;
 
         public MediaController(
-            IMediaPlayer mediaPlayer,
             IMediaFileNameValidator mediaFileNameValidator,
             IDirectoryService directoryService,
             IHubContext<VideoHub> videoHubContext)
         {
-            _mediaPlayer = mediaPlayer;
             _mediaFileNameValidator = mediaFileNameValidator;
             _directoryService = directoryService;
             _videoHubContext = videoHubContext;
@@ -33,7 +30,7 @@ namespace Fun.Api.Controllers
         {
             if (_mediaFileNameValidator.Validate(fileName))
             {
-                _ = _videoHubContext.Clients.All.SendAsync("PlayVideo", fileName).ConfigureAwait(false);
+                _videoHubContext.Clients.All.SendAsync("PlayVideo", fileName).ConfigureAwait(false);
 
                 return Ok();
             }
@@ -44,8 +41,7 @@ namespace Fun.Api.Controllers
         [HttpGet("stop")]
         public IActionResult Stop()
         {
-            // todo send stop to clients
-            _mediaPlayer.Stop();
+            _videoHubContext.Clients.All.SendAsync("StopVideo").ConfigureAwait(false);
             return Ok();
         }
 

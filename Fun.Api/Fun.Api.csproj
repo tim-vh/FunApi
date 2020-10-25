@@ -4,12 +4,9 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="wwwroot\videos\**" />
-    <Content Remove="wwwroot\videos\**" />
-    <EmbeddedResource Remove="wwwroot\videos\**" />
-    <None Remove="wwwroot\videos\**" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.1" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.1" />
+    <Folder Include="wwwroot\videos\" />
   </ItemGroup>
 </Project>

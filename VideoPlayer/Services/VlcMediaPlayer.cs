@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Fun.Api.Services
+namespace Fun.VideoPlayer.Services
 {
     public class VlcMediaPlayer : IMediaPlayer
     {
@@ -18,15 +18,13 @@ namespace Fun.Api.Services
             _settings = settings;
         }
 
-        public void Play(string fileName)
+        public void Play(string uri)
         {
             if (_currentProcess == null || _currentProcess.HasExited)
             {
-                var mediaFileFullPath = Path.Combine(_settings.MediaBasePath, fileName);
-
                 _currentProcess = new Process();
                 _currentProcess.StartInfo.FileName = _settings.VlcPath;
-                _currentProcess.StartInfo.Arguments = $"{mediaFileFullPath} --fullscreen vlc://quit";
+                _currentProcess.StartInfo.Arguments = $"{uri} --fullscreen vlc://quit";
 
                 _currentProcess.Start();
 

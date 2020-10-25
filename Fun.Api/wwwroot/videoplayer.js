@@ -7,11 +7,19 @@ connection.on('PlayVideo', function (fileName) {
     play(fileName);
 });
 
+connection.on('StopVideo', function () {
+    stop();
+});
+
 function play(fileName) {
     if (videoplayer.paused) {
         videoplayer.src = '/videos/' + fileName;
         videoplayer.play();
     }
+}
+
+function stop() {
+    videoplayer.pause();
 }
 
 function connection_click() {

@@ -35,7 +35,6 @@ namespace Fun.Api
             services.Configure<Settings>(Configuration.GetSection("FunApi"));
             services.AddSingleton(Configuration);
             services.AddSingleton(r => r.GetRequiredService<IOptions<Settings>>().Value);
-            services.AddSingleton<IMediaPlayer, VlcMediaPlayer>();
             services.AddScoped<IMediaFileNameValidator, MediaFileNameValidator>();
             services.AddScoped<IDirectoryService, DirectoryService>();
             services.AddSignalR();
