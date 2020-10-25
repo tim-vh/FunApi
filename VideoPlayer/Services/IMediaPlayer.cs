@@ -1,8 +1,8 @@
-﻿namespace Fun.Api.Services
+﻿namespace Fun.VideoPlayer.Services
 {
     public interface IMediaPlayer
     {
-        void Play(string fileName);
+        void Play(string uri);
         void Stop();
     }
 }

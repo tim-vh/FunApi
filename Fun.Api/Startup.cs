@@ -1,6 +1,5 @@
 ﻿using Fun.Api.Services;
 using Fun.Api.Validators;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -31,13 +30,14 @@ namespace Fun.Api
                         .AllowAnyMethod()
                         .AllowAnyHeader();
             }));
-
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.Configure<Settings>(Configuration.GetSection("FunApi"));
+            services.AddSingleton(Configuration);
             services.AddSingleton(r => r.GetRequiredService<IOptions<Settings>>().Value);
-            services.AddSingleton<IMediaPlayer, VlcMediaPlayer>();
             services.AddScoped<IMediaFileNameValidator, MediaFileNameValidator>();
             services.AddScoped<IDirectoryService, DirectoryService>();
+            services.AddSignalR();
 
             services.AddAuthentication(options =>
             {
@@ -60,10 +60,12 @@ namespace Fun.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<VideoHub>("/videohub");
             });
         }
     }

@@ -2,6 +2,7 @@
 using Fun.Api.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Fun.Api.Controllers
 {
@@ -10,26 +11,26 @@ namespace Fun.Api.Controllers
     [Authorize]
     public class MediaController : ControllerBase
     {
-        private readonly IMediaPlayer _mediaPlayer;
         private readonly IMediaFileNameValidator _mediaFileNameValidator;
         private readonly IDirectoryService _directoryService;
+        private readonly IHubContext<VideoHub> _videoHubContext;
 
         public MediaController(
-            IMediaPlayer mediaPlayer,
             IMediaFileNameValidator mediaFileNameValidator,
-            IDirectoryService directoryService)
+            IDirectoryService directoryService,
+            IHubContext<VideoHub> videoHubContext)
         {
-            _mediaPlayer = mediaPlayer;
             _mediaFileNameValidator = mediaFileNameValidator;
             _directoryService = directoryService;
+            _videoHubContext = videoHubContext;
         }
 
         [HttpGet("play/{fileName}")]
-        public ActionResult Play(string fileName)
+        public IActionResult Play(string fileName)
         {
             if (_mediaFileNameValidator.Validate(fileName))
             {
-                _mediaPlayer.Play(fileName);
+                _videoHubContext.Clients.All.SendAsync("PlayVideo", fileName).ConfigureAwait(false);
 
                 return Ok();
             }
@@ -38,14 +39,14 @@ namespace Fun.Api.Controllers
         }
 
         [HttpGet("stop")]
-        public ActionResult Stop()
+        public IActionResult Stop()
         {
-            _mediaPlayer.Stop();
+            _videoHubContext.Clients.All.SendAsync("StopVideo").ConfigureAwait(false);
             return Ok();
         }
 
         [HttpGet("list")]
-        public ActionResult List()
+        public IActionResult List()
         {
             var fileNames = _directoryService.GetMediaFileNames();
             return new JsonResult(fileNames);

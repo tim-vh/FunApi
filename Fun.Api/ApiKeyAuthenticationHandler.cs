@@ -33,7 +33,7 @@ namespace Fun.Api
 
             var providedApiKey = apiKeyHeaderValues.FirstOrDefault();
 
-            if (apiKeyHeaderValues.Count == 0 || string.IsNullOrWhiteSpace(providedApiKey)) //todo count kan weg???
+            if (string.IsNullOrWhiteSpace(providedApiKey))
             {
                 return Task.FromResult(AuthenticateResult.NoResult());
             }

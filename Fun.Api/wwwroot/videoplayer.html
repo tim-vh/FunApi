@@ -1,0 +1,22 @@
+﻿<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun video player</title>
+    <link rel='shortcut icon' type='image/x-icon' href='funny.ico' />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Fun video player</a>
+        <button id="connection-btn" class="btn btn-outline-success" type="button" onclick="connection_click()">Connect</button>
+    </nav>
+    <div class="container">
+        <video id="videoplayer" style="width: 100%; height: 90%; visibility: hidden" controls>
+        </video>
+    </div>
+
+    <script src="/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="videoplayer.js"></script>
+</body>
+</html>
