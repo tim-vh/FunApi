@@ -30,7 +30,8 @@ namespace Fun.Api
                         .AllowAnyMethod()
                         .AllowAnyHeader();
             }));
-            
+
+            services.AddRazorPages();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.Configure<Settings>(Configuration.GetSection("FunApi"));
             services.AddSingleton(Configuration);
@@ -64,6 +65,7 @@ namespace Fun.Api
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapHub<VideoHub>("/videohub");
             });

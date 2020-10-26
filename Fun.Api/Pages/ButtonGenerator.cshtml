@@ -1,0 +1,55 @@
+﻿@page
+@model Fun.Api.Pages.ButtonGeneratorModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Fun Api buttons</title>
+
+    <style>
+        #button-container {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            height: 100%;
+        }
+
+        button {
+            max-height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1507281736509-c6289f1ea0f8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", addButtonOnclickEvent);
+
+        function addButtonOnclickEvent() {
+            var buttons = document.querySelectorAll("button");
+            buttons.forEach(button => {
+                button.onclick = function () { sendRequest(button.innerText); };
+            });
+        }
+
+        function sendRequest(mediaFileName) {
+            var url = 'http://localhost:5000/api/media/play/' + mediaFileName;
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", url, true);
+            xmlHttp.setRequestHeader('X-API-KEY', 'my-secret-key');
+            xmlHttp.send();
+        }
+
+    </script>
+</head>
+<body>
+    <div id="button-container">
+        @foreach (var mediaFileName in Model.MediaFileNames)
+        {
+            <button>@mediaFileName</button>
+        }
+    </div>
+</body>
+</html>
