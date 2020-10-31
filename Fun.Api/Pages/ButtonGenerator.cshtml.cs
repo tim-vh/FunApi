@@ -10,9 +10,19 @@ namespace Fun.Api.Pages
         [BindProperty]
         public IEnumerable<string> MediaFileNames { get; set; }
 
+        [BindProperty]
+        public string ApiKey { get; set; }
+
+        public string BaseUrl { get; set; }
+
         public void OnGet()
         {
             Response.Redirect(Url.Page("/ButtonSettings"));
+        }
+
+        public void OnPost()
+        {
+            BaseUrl = $"{Request.Scheme}://{Request.Host}";
         }
     }
 }

@@ -19,6 +19,10 @@
 
     <div class="container">
         <form method="post" formaction="/ButtonGenerator" target="_blank">
+            <div class="form-group">
+                <label for="api-key">Api key</label>
+                <input type="text" name="apikey" class="form-control" id="api-key" aria-describedby="Api key" placeholder="Api key">
+            </div>
             <div class="row row-cols-4">
                 @foreach (var mediaFileName in Model.MediaFileNames)
                 {

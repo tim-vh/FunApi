@@ -13,15 +13,20 @@
     <style>
         #button-container {
             display: grid;
-            grid-template-columns: auto auto auto;
-            height: 100%;
+            grid-template-columns: 20% 20% 20% 20% 20%;
         }
 
         button {
-            max-height: 100%;
-            background-image: url('https://images.unsplash.com/photo-1507281736509-c6289f1ea0f8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+            background-color: dimgrey;
             background-repeat: no-repeat;
             background-size: cover;
+            padding-top: 56.25%;
+            cursor: pointer;
+        }
+
+        button span {
+            background-color: white;
+            padding: 0.2%;
         }
     </style>
     <script>
@@ -35,10 +40,10 @@
         }
 
         function sendRequest(mediaFileName) {
-            var url = 'http://localhost:5000/api/media/play/' + mediaFileName;
+            var url = '@(Model.BaseUrl)/api/media/play/' + mediaFileName;
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("GET", url, true);
-            xmlHttp.setRequestHeader('X-API-KEY', 'my-secret-key');
+            xmlHttp.setRequestHeader('X-API-KEY', '@(Model.ApiKey)');
             xmlHttp.send();
         }
 
@@ -48,7 +53,7 @@
     <div id="button-container">
         @foreach (var mediaFileName in Model.MediaFileNames)
         {
-            <button>@mediaFileName</button>
+            <button style="background-image: url('videos/thumbnails/@(mediaFileName).jpeg');"><span>@mediaFileName</span></button>
         }
     </div>
 </body>
