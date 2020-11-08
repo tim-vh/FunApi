@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /funapi
 COPY bin/Release/netcoreapp3.0/publish/. ./
 EXPOSE 5000
