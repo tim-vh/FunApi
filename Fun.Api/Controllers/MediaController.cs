@@ -32,7 +32,7 @@ namespace Fun.Api.Controllers
             {
                 _videoHubContext.Clients.All.SendAsync("PlayVideo", fileName).ConfigureAwait(false);
 
-                return Ok();
+                return new NoContentResult();
             }
 
             return NotFound();
