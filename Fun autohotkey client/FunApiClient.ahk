@@ -255,9 +255,5 @@ StopMedia() {
 
 HttpGet(url) {
     global ApiKey
-	static req := ComObjCreate("Msxml2.XMLHTTP")
-	req.open("GET", url, false)
-	req.SetRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT")
-    req.SetRequestHeader("X-API-KEY", ApiKey)
-	req.send()
+    Run, curl.exe -H "X-API-KEY: %ApiKey%" %url%, ,Hide
 }
