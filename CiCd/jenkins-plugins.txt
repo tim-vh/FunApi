@@ -2,3 +2,4 @@ configuration-as-code:latest
 git:latest
 workflow-aggregator:latest
 ws-cleanup:latest
+job-dsl:latest

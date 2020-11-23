@@ -7,7 +7,10 @@ ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 COPY jenkins-plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
-# Change configuration
+# Copy seed job
+COPY seedjob.groovy /usr/local/seedjob.groovy
+
+# Copy jenkins configuration file
 COPY jenkins-configuration.yaml /var/jenkins_home/jenkins-configuration.yaml
 ENV CASC_JENKINS_CONFIG /var/jenkins_home/jenkins-configuration.yaml
 

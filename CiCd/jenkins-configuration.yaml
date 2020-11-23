@@ -12,3 +12,6 @@ jenkins:
   authorizationStrategy: 
       LoggedInUsersCanDoAnything:
         allowAnonymousRead: false
+
+jobs:
+    - file: /usr/local/seedjob.groovy
