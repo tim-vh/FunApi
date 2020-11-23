@@ -1,0 +1,14 @@
+unclassified:
+  location:
+    url: http://127.0.0.1:8080/
+
+jenkins:
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+       - id: ${JENKINS_ADMIN_ID}
+         password: ${JENKINS_ADMIN_PASSWORD}
+  authorizationStrategy: 
+      LoggedInUsersCanDoAnything:
+        allowAnonymousRead: false
