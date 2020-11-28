@@ -1,6 +1,5 @@
 ﻿using Fun.Api.Services;
 using System;
-using System.IO;
 using System.Linq;
 
 namespace Fun.Api.Validators
