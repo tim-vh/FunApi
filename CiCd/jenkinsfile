@@ -14,7 +14,7 @@ pipeline{
         }
         stage("test"){
             steps{
-                sh 'dotnet test --no-build' --collect:"XPlat Code Coverage"
+                sh 'dotnet test --no-build --collect:"XPlat Code Coverage"'
             }
         }
     }    
