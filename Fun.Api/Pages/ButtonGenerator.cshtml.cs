@@ -15,9 +15,9 @@ namespace Fun.Api.Pages
 
         public string BaseUrl { get; set; }
 
-        public void OnGet()
+        public ActionResult OnGet()
         {
-            Response.Redirect(Url.Page("/ButtonSettings"));
+            return Redirect(Url.Page("/ButtonSettings"));
         }
 
         public void OnPost()
