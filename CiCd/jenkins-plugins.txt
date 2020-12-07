@@ -3,3 +3,4 @@ git:latest
 workflow-aggregator:latest
 ws-cleanup:latest
 job-dsl:latest
+cobertura:latest
