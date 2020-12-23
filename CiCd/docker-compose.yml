@@ -11,3 +11,5 @@ services:
             - JENKINS_ADMIN_PASSWORD=admin
         ports: 
             - 8080:8080
+        volumes: 
+            - /var/run/docker.sock:/var/run/docker.sock
