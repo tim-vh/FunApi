@@ -20,7 +20,7 @@ pipeline{
         }
         stage("publish"){
             steps{
-                sh "docker build --file ./Fun.Api/funapi.dockerfile -t timvh/funapi ."
+                sh "docker build --file ./Fun.Api/funapi.dockerfile -t timvh/funapi ./Fun.Api"
             }
         }
     }    
