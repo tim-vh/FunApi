@@ -1,5 +1,8 @@
 pipeline{
     agent any
+    parameters {
+        booleanParam(name: "PUBLISH", defaultValue: false)
+    }
     stages{
         stage('checkout') {
             steps {
@@ -19,8 +22,13 @@ pipeline{
             }
         }
         stage("publish"){
+            when { 
+                expression { params.PUBLISH } 
+            }
             steps{
+                sh 'docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW'
                 sh "docker build --file ./Fun.Api/funapi.dockerfile -t timvh/funapi ./Fun.Api"
+                sh "docker logout"
             }
         }
     }    
