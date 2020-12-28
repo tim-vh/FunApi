@@ -6,11 +6,11 @@
                 <Configuration>
                     <Format>cobertura</Format>
                     <CodeCoverage>
-                        <Functions>
+                        <Sources>
                             <Exclude>
-                                <Function>*Startup.cs</Function>
+                                <Source>*Startup.cs</Source>
                             </Exclude>
-                        </Functions>
+                        </Sources>
                     </CodeCoverage>
                 </Configuration>
             </DataCollector>
