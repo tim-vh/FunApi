@@ -9,6 +9,7 @@ services:
         environment:
             - JENKINS_ADMIN_ID=admin
             - JENKINS_ADMIN_PASSWORD=admin
+            - JENKINS_URL=http://127.0.0.1:8080/
         ports: 
             - 8080:8080
         volumes: 

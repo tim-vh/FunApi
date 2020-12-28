@@ -1,6 +1,6 @@
 unclassified:
   location:
-    url: http://127.0.0.1:8080/
+    url: ${JENKINS_URL}
 
 jenkins:
   securityRealm:
@@ -12,6 +12,8 @@ jenkins:
   authorizationStrategy: 
       LoggedInUsersCanDoAnything:
         allowAnonymousRead: false
+  remotingSecurity:
+    enabled: true
 
 jobs:
     - file: /usr/local/seedjob.groovy
