@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RunSettings>
+    <DataCollectionRunSettings>
+        <DataCollectors>
+            <DataCollector friendlyName="XPlat Code Coverage">
+                <Configuration>
+                    <Format>cobertura</Format>
+                    <CodeCoverage>
+                        <Functions>
+                            <Exclude>
+                                <Function>*Startup.cs</Function>
+                            </Exclude>
+                        </Functions>
+                    </CodeCoverage>
+                </Configuration>
+            </DataCollector>
+        </DataCollectors>
+    </DataCollectionRunSettings>
+</RunSettings>

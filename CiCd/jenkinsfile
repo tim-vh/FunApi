@@ -17,7 +17,7 @@ pipeline{
         }
         stage("test"){
             steps{
-                sh 'dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"'
+                sh 'dotnet test --no-build --configuration Release --settings coverlet.runsettings'
                 cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/Fun.Api.Tests/TestResults/*/coverage.cobertura.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
             }
         }
