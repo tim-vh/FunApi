@@ -8,7 +8,7 @@
                     <CodeCoverage>
                         <Sources>
                             <Exclude>
-                                <Source>*Startup.cs</Source>
+                                <Source>.*Startup.cs</Source>
                             </Exclude>
                         </Sources>
                     </CodeCoverage>
