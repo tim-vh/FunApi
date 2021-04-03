@@ -1,0 +1,53 @@
+﻿@page
+@model Fun.Api.Pages.FunVideoPlayerModel
+@{
+    Layout = null;
+}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun video player</title>
+    <link rel='shortcut icon' type='image/x-icon' href='funny.ico' />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/videoplayer.cshtml.css" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Fun video player</a>
+        <button id="connection-btn" class="btn btn-outline-success" type="button">Connect</button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+                <video id="videoplayer" controls>
+                </video>
+            </div>
+            <div class="col-sm">
+                <div class="input-group mb-3">
+                    <input id="video-filter" type="text" class="form-control" placeholder="Filter...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="clear-filter-button">X</button>
+                    </div>
+                </div>
+                <div id="button-container">
+                    @foreach (var mediaFileName in Model.MediaFileNames)
+                    {
+                        <button data-media-file-name="@mediaFileName" style="background-image: url('@Url.Content("~/videos/thumbnails/" + mediaFileName + ".jpeg")');"><span>@mediaFileName</span></button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/videoplayer.cshtml.js"></script>
+</body>
+</html>
