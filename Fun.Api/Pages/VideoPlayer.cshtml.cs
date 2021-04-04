@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Fun.Api.Model;
 using Fun.Api.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -6,18 +7,18 @@ namespace Fun.Api.Pages
 {
     public class FunVideoPlayerModel : PageModel
     {
-        public IEnumerable<string> MediaFileNames { get; set; }
+        public IEnumerable<Video> Videos { get; set; }
 
-        private readonly IDirectoryService _directoryService;
+        private readonly IGetVideosQuery _getVideosQuery;
 
-        public FunVideoPlayerModel(IDirectoryService directoryService)
+        public FunVideoPlayerModel(IGetVideosQuery getVideosQuery)
         {
-            _directoryService = directoryService;
+            _getVideosQuery = getVideosQuery;
         }
 
         public void OnGet()
         {
-            MediaFileNames = _directoryService.GetMediaFileNames();
+            Videos = _getVideosQuery.Execute();
         }
     }
 }

@@ -37,8 +37,9 @@ namespace Fun.Api
             services.AddSingleton(Configuration);
             services.AddSingleton(r => r.GetRequiredService<IOptions<Settings>>().Value);
             services.AddScoped<IMediaFileNameValidator, MediaFileNameValidator>();
-            services.AddScoped<IDirectoryService, DirectoryService>();
+            services.AddScoped<IGetVideosQuery, GetVideosQuery>();
             services.AddSignalR();
+            services.AddHttpContextAccessor();
 
             services.AddAuthentication(options =>
             {

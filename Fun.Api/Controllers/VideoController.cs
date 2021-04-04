@@ -1,36 +1,34 @@
-﻿using Fun.Api.Services;
-using Fun.Api.Validators;
+﻿using Fun.Api.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using System.Web;
 
 namespace Fun.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class MediaController : ControllerBase
+    public class VideoController : ControllerBase
     {
         private readonly IMediaFileNameValidator _mediaFileNameValidator;
-        private readonly IDirectoryService _directoryService;
         private readonly IHubContext<VideoHub> _videoHubContext;
 
-        public MediaController(
+        public VideoController(
             IMediaFileNameValidator mediaFileNameValidator,
-            IDirectoryService directoryService,
             IHubContext<VideoHub> videoHubContext)
         {
             _mediaFileNameValidator = mediaFileNameValidator;
-            _directoryService = directoryService;
             _videoHubContext = videoHubContext;
         }
 
-        [HttpGet("play/{fileName}")]
-        public IActionResult Play(string fileName)
+        [HttpGet("play/{url}")]
+        public IActionResult Play(string url)
         {
-            if (_mediaFileNameValidator.Validate(fileName))
+            url = HttpUtility.UrlDecode(url);
+            if (_mediaFileNameValidator.Validate(url))
             {
-                _videoHubContext.Clients.All.SendAsync("PlayVideo", fileName).ConfigureAwait(false);
+                _videoHubContext.Clients.All.SendAsync("PlayVideo", url).ConfigureAwait(false);
 
                 return new NoContentResult();
             }
@@ -43,13 +41,6 @@ namespace Fun.Api.Controllers
         {
             _videoHubContext.Clients.All.SendAsync("StopVideo").ConfigureAwait(false);
             return Ok();
-        }
-
-        [HttpGet("list")]
-        public IActionResult List()
-        {
-            var fileNames = _directoryService.GetMediaFileNames();
-            return new JsonResult(fileNames);
         }
     }
 }

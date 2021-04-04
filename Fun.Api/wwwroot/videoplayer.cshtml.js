@@ -29,7 +29,8 @@ function initialize() {
 function addButtonOnclickEvents() {
     var buttons = document.querySelectorAll("#button-container button");
     buttons.forEach(button => {
-        button.onclick = function () { sendRequest(button.innerText); };
+        var url = encodeURIComponent(button.dataset.videoUrl);
+        button.onclick = function () { sendRequest(url); };
     });
 }
 
@@ -38,7 +39,7 @@ function filterVideos(event) {
 
     var buttons = document.querySelectorAll("#button-container button");
     buttons.forEach(button => {
-        if (button.dataset.mediaFileName.includes(filter)) {
+        if (button.dataset.videoName.includes(filter)) {
             button.style.display = "block";
         } else {
             button.style.display = "none";
@@ -58,7 +59,7 @@ function clearFilter() {
 
 function play(fileName) {
     if (videoplayer.paused) {
-        videoplayer.src = '/videos/' + fileName;
+        videoplayer.src = fileName;
         videoplayer.play();
     }
 }
@@ -104,7 +105,7 @@ function disconnect() {
 }
 
 function sendRequest(mediaFileName) {
-    var url = 'api/media/play/' + mediaFileName;
+    var url = 'api/video/play/' + mediaFileName;
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", url, true);
     xmlHttp.setRequestHeader('X-API-KEY', 'my-secret-key');

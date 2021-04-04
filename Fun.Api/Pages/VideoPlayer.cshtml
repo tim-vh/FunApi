@@ -38,9 +38,9 @@
                     </div>
                 </div>
                 <div id="button-container">
-                    @foreach (var mediaFileName in Model.MediaFileNames)
+                    @foreach (var video in Model.Videos)
                     {
-                        <button data-media-file-name="@mediaFileName" style="background-image: url('@Url.Content("~/videos/thumbnails/" + mediaFileName + ".jpeg")');"><span>@mediaFileName</span></button>
+                        <button data-video-name="@video.Name" data-video-url="@video.Url" style="background-image: url('@video.Thumbnail');"><span>@video.Name</span></button>
                     }
                 </div>
             </div>

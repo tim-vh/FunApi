@@ -1,22 +1,21 @@
 ﻿using Fun.Api.Services;
-using System;
 using System.Linq;
 
 namespace Fun.Api.Validators
 {
     public class MediaFileNameValidator : IMediaFileNameValidator
     {
-        private readonly IDirectoryService _directoryService;
+        private readonly IGetVideosQuery _videosQuery;
 
-        public MediaFileNameValidator(IDirectoryService directoryService)
+        public MediaFileNameValidator(IGetVideosQuery videosQuery)
         {
-            _directoryService = directoryService;
+            _videosQuery = videosQuery;
         }
 
-        public bool Validate(string fileName)
+        public bool Validate(string url)
         {
-            var fileNames = _directoryService.GetMediaFileNames();
-            return fileNames.Contains(fileName);
+            var videos = _videosQuery.Execute();
+            return videos.Any(v => v.Url == url);
         }
     }
 }

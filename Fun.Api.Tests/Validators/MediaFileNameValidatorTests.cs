@@ -9,13 +9,13 @@ namespace Fun.Api.Tests.Validators
 {
     public class MediaFileNameValidatorTests
     {
-        private readonly Mock<IDirectoryService> _directoryService;
+        private readonly Mock<IGetVideosQuery> _directoryService;
 
         private readonly MediaFileNameValidator _mediaFileNameValidator;
 
         public MediaFileNameValidatorTests()
         {
-            _directoryService = new Mock<IDirectoryService>();
+            _directoryService = new Mock<IGetVideosQuery>();
 
             _mediaFileNameValidator = new MediaFileNameValidator(_directoryService.Object);
         }
@@ -27,7 +27,7 @@ namespace Fun.Api.Tests.Validators
             const string fileName = "exists";
             var files = new List<string> { "a", "b", "c", fileName };
 
-            _directoryService.Setup(d => d.GetMediaFileNames()).Returns(files);
+            _directoryService.Setup(d => d.Execute()).Returns(files);
 
             // Act
             var isValid = _mediaFileNameValidator.Validate(fileName);
