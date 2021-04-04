@@ -37,10 +37,10 @@
                         <button class="btn btn-outline-secondary" type="button" id="clear-filter-button">X</button>
                     </div>
                 </div>
-                <div id="button-container">
+                <div id="video-button-container">
                     @foreach (var video in Model.Videos)
                     {
-                        <button data-video-name="@video.Name" data-video-url="@video.Url" style="background-image: url('@video.Thumbnail');"><span>@video.Name</span></button>
+                        <button data-background="green" data-video-name="@video.Name" data-video-url="@video.Url" data-video-thumbnail="@video.Thumbnail"><span>@video.Name</span></button>
                     }
                 </div>
             </div>

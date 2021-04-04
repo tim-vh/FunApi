@@ -1,23 +1,65 @@
-﻿var connected = false;
-var connection = new signalR.HubConnectionBuilder().withUrl("/videohub").build();
-var connectButton = document.getElementById('connection-btn');
-var videoplayer = document.getElementById('videoplayer');
+﻿class VideoPlayer {
+    constructor() {
+        this.connected = false;
+        this.connection = new signalR.HubConnectionBuilder().withUrl("/videohub").build();
+        this.connectButton = document.getElementById('connection-btn');
+        this.videoplayer = document.getElementById('videoplayer');
 
-connection.on('PlayVideo', function (fileName) {
-    play(fileName);
-});
+        this.connection.on('PlayVideo', this.play);
+        this.connection.on('StopVideo', this.stop);
 
-connection.on('StopVideo', function () {
-    stop();
-});
+        var connetionButton = document.querySelector("#connection-btn");
+        connetionButton.onclick = this.connection_click;
+    }
+
+    play = (url) => {
+        if (this.videoplayer.paused) {
+            this.videoplayer.src = url;
+            this.videoplayer.play();
+        }
+    }
+
+    stop = () => {
+        this.videoplayer.pause();
+    }
+
+    connection_click = () => {
+        if (!this.connected) {
+            this.connect();
+        } else {
+            this.disconnect();
+        }
+    }
+
+    async connect() {
+        await this.connection.start();
+        this.connected = true;
+
+        this.connectButton.classList.add('btn-outline-danger');
+        this.connectButton.classList.remove('btn-outline-success');
+        this.connectButton.textContent = 'disconnect';
+
+        this.videoplayer.style.visibility = 'visible';
+    }
+
+    async disconnect() {
+        await this.connection.stop();
+        this.connected = false;
+
+        this.connectButton.classList.add('btn-outline-success');
+        this.connectButton.classList.remove('btn-outline-danger');
+        this.connectButton.textContent = 'connect';
+
+        this.videoplayer.style.visibility = 'hidden';
+    }
+}
+
+let videoPlayer = new VideoPlayer();
 
 document.addEventListener("DOMContentLoaded", initialize);
 
 function initialize() {
     addButtonOnclickEvents();
-
-    var connetionButton = document.querySelector("#connection-btn");
-    connetionButton.onclick = connection_click;
 
     let videoFilter = document.querySelector("#video-filter");
     videoFilter.oninput = filterVideos;
@@ -27,7 +69,7 @@ function initialize() {
 }
 
 function addButtonOnclickEvents() {
-    var buttons = document.querySelectorAll("#button-container button");
+    var buttons = document.querySelectorAll("#video-button-container button");
     buttons.forEach(button => {
         var url = encodeURIComponent(button.dataset.videoUrl);
         button.onclick = function () { sendRequest(url); };
@@ -55,53 +97,6 @@ function clearFilter() {
     buttons.forEach(button => {
         button.style.display = "block";
     });
-}
-
-function play(fileName) {
-    if (videoplayer.paused) {
-        videoplayer.src = fileName;
-        videoplayer.play();
-    }
-}
-
-function stop() {
-    videoplayer.pause();
-}
-
-function connection_click() {
-    if (!connected) {
-        connect();
-    } else {
-        disconnect();
-    }
-}
-
-function connect() {
-    connection.start().then(function () {
-        connected = true;
-
-        connectButton.classList.add('btn-outline-danger');
-        connectButton.classList.remove('btn-outline-success');
-        connectButton.textContent = 'disconnect';
-
-        videoplayer.style.visibility = 'visible';
-    }).catch(function (err) {
-        return alert(err.toString());
-    });
-}
-
-function disconnect() {
-    connection.stop().then(function () {
-        connected = false;
-
-        connectButton.classList.add('btn-outline-success');
-        connectButton.classList.remove('btn-outline-danger');
-        connectButton.textContent = 'connect';
-
-        videoplayer.style.visibility = 'hidden';
-    }).catch(function (err) {
-        return alert(err.toString());
-    });;
 }
 
 function sendRequest(mediaFileName) {
