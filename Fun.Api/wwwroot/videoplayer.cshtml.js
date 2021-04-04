@@ -9,7 +9,7 @@
         this.connection.on('StopVideo', this.stop);
 
         var connetionButton = document.querySelector("#connection-btn");
-        connetionButton.onclick = this.connection_click;
+        connetionButton.onclick = this.connection_onclick;
     }
 
     play = (url) => {
@@ -23,7 +23,7 @@
         this.videoplayer.pause();
     }
 
-    connection_click = () => {
+    connection_onclick = () => {
         if (!this.connected) {
             this.connect();
         } else {
@@ -54,55 +54,63 @@
     }
 }
 
-let videoPlayer = new VideoPlayer();
+class VideoPlayButtons {
+    constructor() {
+        this.addButtonOnclickEvents();
 
-document.addEventListener("DOMContentLoaded", initialize);
+        let videoFilter = document.querySelector("#video-filter");
+        videoFilter.oninput = this.filterVideos_oninput;
 
-function initialize() {
-    addButtonOnclickEvents();
+        let filterClearButton = document.querySelector("#clear-filter-button");
+        filterClearButton.onclick = this.clearFilter_onlick;
+    }
 
-    let videoFilter = document.querySelector("#video-filter");
-    videoFilter.oninput = filterVideos;
+    addButtonOnclickEvents() {
+        var buttons = document.querySelectorAll("#video-button-container button");
+        buttons.forEach(button => {
+            button.style.backgroundImage = `url('${button.dataset.videoThumbnail}')`;
+            button.onclick = this.videoButton_onclick;
+        });
+    }
 
-    let filterClearButton = document.querySelector("#clear-filter-button");
-    filterClearButton.onclick = clearFilter;
-}
+    videoButton_onclick = (event) => {
+        let url = encodeURIComponent(event.target.dataset.videoUrl);
+        this.sendRequest(url);
+    }
 
-function addButtonOnclickEvents() {
-    var buttons = document.querySelectorAll("#video-button-container button");
-    buttons.forEach(button => {
-        var url = encodeURIComponent(button.dataset.videoUrl);
-        button.onclick = function () { sendRequest(url); };
-    });
-}
+    filterVideos_oninput = (event) => {
+        let filter = event.target.value;
 
-function filterVideos(event) {
-    var filter = event.target.value;
+        let buttons = document.querySelectorAll("#video-button-container button");
+        buttons.forEach(button => {
+            if (button.dataset.videoName.includes(filter)) {
+                button.style.display = "block";
+            } else {
+                button.style.display = "none";
+            }
+        });
+    }
 
-    var buttons = document.querySelectorAll("#button-container button");
-    buttons.forEach(button => {
-        if (button.dataset.videoName.includes(filter)) {
+    clearFilter_onlick = () => {
+        let videoFilter = document.querySelector("#video-filter");
+        videoFilter.value = "";
+
+        let buttons = document.querySelectorAll("#video-button-container button");
+        buttons.forEach(button => {
             button.style.display = "block";
-        } else {
-            button.style.display = "none";
-        }
-    });
+        });
+    }
+
+    sendRequest(mediaFileName) {
+        let url = 'api/video/play/' + mediaFileName;
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", url, true);
+        xmlHttp.setRequestHeader('X-API-KEY', 'my-secret-key');
+        xmlHttp.send();
+    }
 }
 
-function clearFilter() {
-    let videoFilter = document.querySelector("#video-filter");
-    videoFilter.value = "";
-
-    var buttons = document.querySelectorAll("#button-container button");
-    buttons.forEach(button => {
-        button.style.display = "block";
-    });
-}
-
-function sendRequest(mediaFileName) {
-    var url = 'api/video/play/' + mediaFileName;
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", url, true);
-    xmlHttp.setRequestHeader('X-API-KEY', 'my-secret-key');
-    xmlHttp.send();
-}
+document.addEventListener("DOMContentLoaded", function () {
+    new VideoPlayer();
+    new VideoPlayButtons();
+});
