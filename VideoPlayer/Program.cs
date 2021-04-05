@@ -42,9 +42,9 @@ namespace Fun.VideoPlayer
             Console.WriteLine("Connection closed");
         }
 
-        private static void PlayVideo(string fileName)
+        private static void PlayVideo(string url)
         {
-            _mediaPlayer.Play($"{_settings.ServerAddress}/videos/{fileName}");
+            _mediaPlayer.Play(url);
         }
 
         private static void StopVideo()
