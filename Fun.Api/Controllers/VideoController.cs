@@ -1,7 +1,6 @@
 ﻿using Fun.Api.Model;
 using Fun.Api.Services;
 using Fun.Api.Validators;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Generic;
@@ -11,7 +10,6 @@ namespace Fun.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
     public class VideoController : ControllerBase
     {
         private readonly IGetVideosQuery _getVideosQuery;

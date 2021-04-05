@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
 
 namespace Fun.Api
@@ -33,19 +32,11 @@ namespace Fun.Api
 
             services.AddRazorPages();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            services.Configure<Settings>(Configuration.GetSection("FunApi"));
             services.AddSingleton(Configuration);
-            services.AddSingleton(r => r.GetRequiredService<IOptions<Settings>>().Value);
             services.AddScoped<IMediaFileNameValidator, MediaFileNameValidator>();
             services.AddScoped<IGetVideosQuery, GetVideosQuery>();
             services.AddSignalR();
             services.AddHttpContextAccessor();
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = ApiKeyAuthenticationOptions.DefaultScheme;
-                options.DefaultChallengeScheme = ApiKeyAuthenticationOptions.DefaultScheme;
-            }).AddApiKeySupport(options => { });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
