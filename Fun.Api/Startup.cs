@@ -33,7 +33,7 @@ namespace Fun.Api
             services.AddRazorPages();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSingleton(Configuration);
-            services.AddScoped<IMediaFileNameValidator, MediaFileNameValidator>();
+            services.AddScoped<IVideoUrlValidator, VideoUrlValidator>();
             services.AddScoped<IGetVideosQuery, GetVideosQuery>();
             services.AddSignalR();
             services.AddHttpContextAccessor();

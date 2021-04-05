@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace Fun.Api.Validators
 {
-    public class MediaFileNameValidator : IMediaFileNameValidator
+    public class VideoUrlValidator : IVideoUrlValidator
     {
         private readonly IGetVideosQuery _videosQuery;
 
-        public MediaFileNameValidator(IGetVideosQuery videosQuery)
+        public VideoUrlValidator(IGetVideosQuery videosQuery)
         {
             _videosQuery = videosQuery;
         }

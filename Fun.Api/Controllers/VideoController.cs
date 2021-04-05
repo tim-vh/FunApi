@@ -13,16 +13,16 @@ namespace Fun.Api.Controllers
     public class VideoController : ControllerBase
     {
         private readonly IGetVideosQuery _getVideosQuery;
-        private readonly IMediaFileNameValidator _mediaFileNameValidator;
+        private readonly IVideoUrlValidator _videoUrlValidator;
         private readonly IHubContext<VideoHub> _videoHubContext;
 
         public VideoController(
             IGetVideosQuery getVideosQuery,
-            IMediaFileNameValidator mediaFileNameValidator,
+            IVideoUrlValidator videoUrlValidator,
             IHubContext<VideoHub> videoHubContext)
         {
             _getVideosQuery = getVideosQuery ?? throw new System.ArgumentNullException(nameof(getVideosQuery));
-            _mediaFileNameValidator = mediaFileNameValidator ?? throw new System.ArgumentNullException(nameof(mediaFileNameValidator));
+            _videoUrlValidator = videoUrlValidator ?? throw new System.ArgumentNullException(nameof(videoUrlValidator));
             _videoHubContext = videoHubContext ?? throw new System.ArgumentNullException(nameof(videoHubContext));
         }
 
@@ -30,7 +30,7 @@ namespace Fun.Api.Controllers
         public ActionResult Play(string url)
         {
             url = HttpUtility.UrlDecode(url);
-            if (_mediaFileNameValidator.Validate(url))
+            if (_videoUrlValidator.Validate(url))
             {
                 _videoHubContext.Clients.All.SendAsync("PlayVideo", url).ConfigureAwait(false);
 
