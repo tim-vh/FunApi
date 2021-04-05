@@ -8,28 +8,29 @@ fun-video-player button {
     margin-bottom: 20px;
 }
 
-fun-video-player button.disconnected {
-    color: green;
-}
-
-fun-video-player button.connected {
-    color: red;
-}
-
-#video-button-container {
-    display: grid;
-    grid-template-columns: repeat(4, calc(100% / 4));
-}
-
-    #video-button-container button {
-        background-color: dimgrey;
-        background-repeat: no-repeat;
-        background-size: cover;
-        padding-top: 56.25%;
-        cursor: pointer;
+    fun-video-player button.disconnected {
+        color: green;
     }
 
-        #video-button-container button span {
-            background-color: white;
-            padding: 0.2%;
-        }
+    fun-video-player button.connected {
+        color: red;
+    }
+
+fun-video-button button {
+    background-color: dimgrey;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 56.25%;
+    cursor: pointer;
+    width: 100%;
+}
+
+    fun-video-button button span {
+        background-color: white;
+        padding: 0.2%;
+    }
+
+fun-video-button-grid input {
+    margin-top: 20px;
+    margin-bottom : 20px;
+}

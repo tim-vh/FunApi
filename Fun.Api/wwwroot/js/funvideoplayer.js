@@ -1,5 +1,13 @@
 ﻿class FunVideoPlayer extends HTMLElement {
 
+    get url() {
+        return this.getAttribute("url");
+    }
+
+    set url(value) {
+        this.setAttribute("url", value);
+    }
+
     connectedCallback() {
         this.connected = false;
         this.createConnectionButton();
@@ -14,16 +22,15 @@
     }
 
     createVideoElement() {
-        this.videoPlayer = document.createElement("VIDEO");
+        this.videoPlayer = document.createElement("video");
         this.videoPlayer.setAttribute("controls", "controls");
         this.videoPlayer.style.visibility = "hidden";
         this.appendChild(this.videoPlayer);
     }
 
     setupConnection() {
-        let url = this.getAttribute("url");
-        if (url) {
-            this.connection = new signalR.HubConnectionBuilder().withUrl(url).build();
+        if (this.url) {
+            this.connection = new signalR.HubConnectionBuilder().withUrl(this.url).build();
             this.connection.on('PlayVideo', this.playVideo);
             this.connection.on('StopVideo', this.stopVideo);
         }
@@ -71,8 +78,8 @@
 class FunConnectionButton extends HTMLElement {
 
     connectedCallback() {
-        this.button = document.createElement("BUTTON");
-        this.button.innerText = "Connect";
+        this.button = document.createElement("button");
+        this.button.textContent = "Connect";
         this.button.classList.add('disconnected');
         this.appendChild(this.button);
     }
@@ -80,13 +87,13 @@ class FunConnectionButton extends HTMLElement {
     setConnected() {
         this.button.classList.add('connected');
         this.button.classList.remove('disconnected');
-        this.button.innerText = 'Disconnect';
+        this.button.textContent = 'Disconnect';
     }
 
     setDisconnected() {
         this.button.classList.add('disconnected');
         this.button.classList.remove('connected');
-        this.button.innerText = 'Connect';
+        this.button.textContent = 'Connect';
     }
 }
 
