@@ -1,7 +1,19 @@
-﻿#videoplayer {
+﻿fun-video-player video {
     width: 100%;
     min-width: 600px;
-    visibility: hidden;
+}
+
+fun-video-player button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+fun-video-player button.disconnected {
+    color: green;
+}
+
+fun-video-player button.connected {
+    color: red;
 }
 
 #video-button-container {
