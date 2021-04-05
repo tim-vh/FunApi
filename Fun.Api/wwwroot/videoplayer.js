@@ -56,26 +56,44 @@
 
 class VideoPlayButtons {
     constructor() {
-        this.addButtonOnclickEvents();
-
         let videoFilter = document.querySelector("#video-filter");
         videoFilter.oninput = this.filterVideos_oninput;
 
         let filterClearButton = document.querySelector("#clear-filter-button");
         filterClearButton.onclick = this.clearFilter_onlick;
+
+        this.addVideoButtons();
     }
 
-    addButtonOnclickEvents() {
-        var buttons = document.querySelectorAll("#video-button-container button");
-        buttons.forEach(button => {
-            button.style.backgroundImage = `url('${button.dataset.videoThumbnail}')`;
+    async addVideoButtons() {
+        let videoButtonContainer = document.querySelector("#video-button-container");
+        let videos = await this.getVideos();
+        videos.forEach(video => {
+            let button = document.createElement("button");
+            button.style.backgroundImage = `url('${video.thumbnail}')`;
+            button.dataset.videoName = video.name;
+            button.dataset.videoUrl = video.url;
             button.onclick = this.videoButton_onclick;
+
+            let videoNameSpan = document.createElement("span");
+            videoNameSpan.textContent = video.name;
+
+            button.appendChild(videoNameSpan);
+
+            videoButtonContainer.appendChild(button);
         });
     }
 
     videoButton_onclick = (event) => {
-        let url = encodeURIComponent(event.target.dataset.videoUrl);
-        this.sendRequest(url);
+        let url;
+        if (event.target.nodeName == "BUTTON") {
+            url = encodeURIComponent(event.target.dataset.videoUrl);           
+        }
+        if (event.target.nodeName == "SPAN") {
+            url = encodeURIComponent(event.target.parentNode.dataset.videoUrl);
+        }
+
+        this.sendPlayVideoRequest(url);
     }
 
     filterVideos_oninput = (event) => {
@@ -101,12 +119,14 @@ class VideoPlayButtons {
         });
     }
 
-    sendRequest(mediaFileName) {
-        let url = 'api/video/play/' + mediaFileName;
-        let xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", url, true);
-        xmlHttp.setRequestHeader('X-API-KEY', 'my-secret-key');
-        xmlHttp.send();
+    async sendPlayVideoRequest(videoUrl) {
+        let url = "api/video/play/" + videoUrl;
+        await fetch(url);
+    }
+
+    async getVideos() {
+        var result = await fetch("api/video");
+        return await result.json();
     }
 }
 

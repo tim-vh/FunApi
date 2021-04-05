@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "VideoPlayer",
+      "launchUrl": "VideoPlayer.html",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

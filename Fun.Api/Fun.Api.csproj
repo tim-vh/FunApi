@@ -9,6 +9,7 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.1" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Pages\" />
     <Folder Include="wwwroot\videos\thumbnails\" />
   </ItemGroup>
 </Project>
