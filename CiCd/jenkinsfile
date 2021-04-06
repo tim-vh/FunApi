@@ -26,9 +26,12 @@ pipeline{
                 expression { params.PUBLISH } 
             }
             steps{
-                sh 'docker login -u $DOCKER_CREDS_USR -p $DOCKER_CREDS_PSW'
-                sh "docker build --file ./Fun.Api/funapi.dockerfile -t timvh/funapi ./Fun.Api"
-                sh "docker logout"
+                withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'user', passwordVariable: 'password')]) {
+                    sh "docker login -u $user -p $password"
+                    sh "docker build --file ./Fun.Api/funapi.dockerfile -t timvh/funapi ./Fun.Api"
+                    sh "docker push timvh/funapi"
+                    sh "docker logout"
+                }
             }
         }
     }    
