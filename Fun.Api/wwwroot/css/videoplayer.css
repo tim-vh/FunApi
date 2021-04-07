@@ -3,18 +3,18 @@
     min-width: 600px;
 }
 
-fun-video-player button {
+/*fun-video-player button {
     margin-top: 20px;
     margin-bottom: 20px;
-}
+}*/
 
-    fun-video-player button.disconnected {
+/*    fun-video-player button.disconnected {
         color: green;
     }
 
     fun-video-player button.connected {
         color: red;
-    }
+    }*/
 
 fun-video-button button {
     background-color: dimgrey;

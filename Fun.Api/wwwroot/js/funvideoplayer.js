@@ -10,15 +10,14 @@
 
     connectedCallback() {
         this.connected = false;
-        this.createConnectionButton();
+        this.setupConnectionButton();
         this.createVideoElement();
-        this.setupConnection();        
+        this.setupConnection();
     }
 
-    createConnectionButton() {
-        this.connectionButton = document.createElement("fun-connection-button");
+    setupConnectionButton() {
+        this.connectionButton = this.querySelector("fun-connection-button");
         this.connectionButton.onclick = this.connectionButton_onclick;
-        this.appendChild(this.connectionButton);
     }
 
     createVideoElement() {
@@ -70,30 +69,38 @@
             this.connected = false;
             this.videoPlayer.pause();
             this.connectionButton.setDisconnected();
-            this.videoPlayer.style.visibility = 'hidden';
+            this.videoPlayer.style.visibility = "hidden";
         }
     }
 }
 
 class FunConnectionButton extends HTMLElement {
 
+    get connectedClass() { return this.getAttribute("connectedclass"); }
+    set connectedClass(value) { this.setAttribute("connectedclass", value); }
+
+    get disconnectedClass() { return this.getAttribute("disconnectedclass"); }
+    set disconnectedClass(value) { this.setAttribute("disconnectedclass", value); }
+
     connectedCallback() {
-        this.button = document.createElement("button");
+        if (!this.connectedClass) this.connectedClass = "connected";
+        if (!this.disconnectedClass) this.disconnectedClass = "disconnected";
+
+        this.button = this.querySelector("button")
         this.button.textContent = "Connect";
-        this.button.classList.add('disconnected');
-        this.appendChild(this.button);
+        this.button.classList.add(this.disconnectedClass);
     }
 
     setConnected() {
-        this.button.classList.add('connected');
-        this.button.classList.remove('disconnected');
-        this.button.textContent = 'Disconnect';
+        this.button.classList.add(this.connectedClass);
+        this.button.classList.remove(this.disconnectedClass);
+        this.button.textContent = "Disconnect";
     }
 
     setDisconnected() {
-        this.button.classList.add('disconnected');
-        this.button.classList.remove('connected');
-        this.button.textContent = 'Connect';
+        this.button.classList.add(this.disconnectedClass);
+        this.button.classList.remove(this.connectedClass);
+        this.button.textContent = "Connect";
     }
 }
 
