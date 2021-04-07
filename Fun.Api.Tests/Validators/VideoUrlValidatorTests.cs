@@ -8,17 +8,17 @@ using Fun.Api.Model;
 
 namespace Fun.Api.Tests.Validators
 {
-    public class MediaFileNameValidatorTests
+    public class VideoUrlValidatorTests
     {
         private readonly Mock<IGetVideosQuery> _GetVideosQuery;
 
-        private readonly VideoUrlValidator _mediaFileNameValidator;
+        private readonly VideoUrlValidator _videoUrlValidator;
 
-        public MediaFileNameValidatorTests()
+        public VideoUrlValidatorTests()
         {
             _GetVideosQuery = new Mock<IGetVideosQuery>();
 
-            _mediaFileNameValidator = new VideoUrlValidator(_GetVideosQuery.Object);
+            _videoUrlValidator = new VideoUrlValidator(_GetVideosQuery.Object);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace Fun.Api.Tests.Validators
             _GetVideosQuery.Setup(d => d.Execute()).Returns(videos);
 
             // Act
-            var isValid = _mediaFileNameValidator.Validate(video.Url);
+            var isValid = _videoUrlValidator.Validate(video.Url);
 
             // Assert
             isValid.Should().Be(true);
@@ -58,7 +58,7 @@ namespace Fun.Api.Tests.Validators
             _GetVideosQuery.Setup(d => d.Execute()).Returns(videos);
 
             // Act
-            var isValid = _mediaFileNameValidator.Validate(video.Url);
+            var isValid = _videoUrlValidator.Validate(video.Url);
 
             // Assert
             isValid.Should().Be(false);
