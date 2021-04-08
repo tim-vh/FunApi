@@ -30,8 +30,8 @@
     setupConnection() {
         if (this.url) {
             this.connection = new signalR.HubConnectionBuilder().withUrl(this.url).build();
-            this.connection.on('PlayVideo', this.playVideo);
-            this.connection.on('StopVideo', this.stopVideo);
+            this.connection.on("PlayVideo", this.playVideo);
+            this.connection.on("StopVideo", this.stopVideo);
         }
     }
 
@@ -59,7 +59,7 @@
             await this.connection.start();
             this.connected = true;
             this.connectionButton.setConnected();
-            this.videoPlayer.style.visibility = 'visible';
+            this.videoPlayer.style.visibility = "visible";
         }
     }
 

@@ -44,36 +44,30 @@ class FunVideoButtonGrid extends HTMLElement {
     set apiBaseUrl(value) { this.setAttribute("apiBaseUrl", value); }
 
     connectedCallback() {        
-        this.createFilterBar();
+        this.setupFilterBar();
         this.createColumnsConfigurator();
-        this.createButtonConatainer();
+        this.createButtonContainer();
         this.addVideoButtons();
     }
 
-    createFilterBar() {
-        this.apiBaseUrl = this.apiBaseUrl ?? "";
-        this.columns = this.columns ?? 4;
+    setupFilterBar() {
+        if (!this.apiBaseUrl) this.apiBaseUrl = "";
+        if (!this.columns) this.columns = 4;
 
-        this.videoFilter = document.createElement("input");
-        this.videoFilter.placeholder = "filter...";
+        this.videoFilter = this.querySelector("input.filter");
         this.videoFilter.oninput = this.videoFilter_oninput;
-        this.appendChild(this.videoFilter);
-
-        this.clearFilterButton = document.createElement("button");
-        this.clearFilterButton.textContent = "clear";
+        
+        this.clearFilterButton = this.querySelector("button.clear");
         this.clearFilterButton.onclick = this.clearFilterButton_onlick;
-        this.appendChild(this.clearFilterButton);
     }
 
     createColumnsConfigurator() {
-        this.columnsCounter = document.createElement("input");
-        this.columnsCounter.type = "number";
+        this.columnsCounter = this.querySelector("input.colums-counter");
         this.columnsCounter.value = this.columns;
         this.columnsCounter.oninput = this.columnsCounter_oninput;
-        this.appendChild(this.columnsCounter);
     }
 
-    createButtonConatainer() {
+    createButtonContainer() {
         this.buttonContainer = document.createElement("div");
         this.buttonContainer.style.display = "grid";
         this.setGridColumns();
