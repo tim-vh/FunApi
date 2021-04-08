@@ -45,7 +45,7 @@ class FunVideoButtonGrid extends HTMLElement {
 
     connectedCallback() {        
         this.setupFilterBar();
-        this.createColumnsConfigurator();
+        this.setupColumnsConfigurator();
         this.createButtonContainer();
         this.addVideoButtons();
     }
@@ -61,10 +61,14 @@ class FunVideoButtonGrid extends HTMLElement {
         this.clearFilterButton.onclick = this.clearFilterButton_onlick;
     }
 
-    createColumnsConfigurator() {
+    setupColumnsConfigurator() {
         this.columnsCounter = this.querySelector("input.colums-counter");
         this.columnsCounter.value = this.columns;
         this.columnsCounter.oninput = this.columnsCounter_oninput;
+    }
+
+    setupStopButton() {
+
     }
 
     createButtonContainer() {
