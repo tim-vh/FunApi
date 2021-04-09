@@ -69,8 +69,8 @@ class FunVideoButtonGrid extends HTMLElement {
     }
 
     setupStopButton() {
-        this.clearFilterButton = this.querySelector("button.stop");
-        this.onclick = this.stopButton_onclick;
+        this.stopButton = this.querySelector("button.stop");
+        this.stopButton.onclick = this.stopButton_onclick;
     }
 
     createButtonContainer() {
