@@ -1,4 +1,5 @@
-﻿using Fun.Api.Services;
+﻿using Fun.Api.Helpers;
+using Fun.Api.Services;
 using Fun.Api.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NLog;
 
 namespace Fun.Api
 {
@@ -31,10 +33,12 @@ namespace Fun.Api
             }));
 
             services.AddRazorPages();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc(options => { options.Filters.Add(typeof(ExceptionLogger)); })
+                        .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSingleton(Configuration);
             services.AddScoped<IVideoUrlValidator, VideoUrlValidator>();
             services.AddScoped<IGetVideosQuery, GetVideosQuery>();
+            services.AddScoped<ILogger, Logger>();
             services.AddSignalR();
             services.AddHttpContextAccessor();
         }
