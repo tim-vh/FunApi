@@ -33,12 +33,10 @@ namespace Fun.Api
             }));
 
             services.AddRazorPages();
-            services.AddMvc(options => { options.Filters.Add(typeof(ExceptionLogger)); })
-                        .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc(options => { options.Filters.Add(typeof(ExceptionLogger)); });
             services.AddSingleton(Configuration);
             services.AddScoped<IVideoUrlValidator, VideoUrlValidator>();
             services.AddScoped<IGetVideosQuery, GetVideosQuery>();
-            services.AddScoped<ILogger, Logger>();
             services.AddSignalR();
             services.AddHttpContextAccessor();
         }
