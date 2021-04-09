@@ -48,6 +48,7 @@ class FunVideoButtonGrid extends HTMLElement {
         this.setupColumnsConfigurator();
         this.createButtonContainer();
         this.addVideoButtons();
+        this.setupStopButton();
     }
 
     setupFilterBar() {
@@ -68,7 +69,8 @@ class FunVideoButtonGrid extends HTMLElement {
     }
 
     setupStopButton() {
-
+        this.clearFilterButton = this.querySelector("button.stop");
+        this.onclick = this.stopButton_onclick;
     }
 
     createButtonContainer() {
@@ -88,6 +90,10 @@ class FunVideoButtonGrid extends HTMLElement {
         this.buttonContainer.childNodes.forEach(button => {
             button.style.display = "block";
         });
+    }
+
+    stopButton_onclick = () => {
+        this.stopVideo();   
     }
 
     columnsCounter_oninput = () => {
@@ -115,6 +121,11 @@ class FunVideoButtonGrid extends HTMLElement {
             button.apiBaseUrl = this.apiBaseUrl;
             this.buttonContainer.appendChild(button);
         });
+    }
+
+    async stopVideo() {
+        let url = this.apiBaseUrl + "api/video/stop";
+        await fetch(url);
     }
 
     async getVideos() {
