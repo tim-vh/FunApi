@@ -26,7 +26,7 @@ pipelineJob('build-jenkins-master') {
           branch('*/master')
         }
       }
-      scriptPath('jenkins/jenkinsfile')
+      scriptPath('Jenkins/jenkinsfile')
       lightweight()
     }
   }
