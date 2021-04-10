@@ -3,6 +3,10 @@ pipeline{
     parameters {
         booleanParam(name: "PUBLISH", defaultValue: false)
     }
+    environment {
+        version = sh(script: 'date +%y.%j.%H%M', returnStdout: true)
+    }
+
     stages{
         stage('checkout') {
             steps {
@@ -12,7 +16,7 @@ pipeline{
         }
         stage("build"){
             steps{
-                sh 'dotnet publish --configuration Release'
+                sh 'dotnet publish --configuration Release /p:Version=1.0.0.0 /p:FileVersion=1.${version}'
             }
         }
         stage("test"){
@@ -27,11 +31,13 @@ pipeline{
             }
             steps{
                 withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'user', passwordVariable: 'password')]) {
-                    sh "docker login -u $user -p $password"
-                    sh "docker build --file ./Fun.Api/funapi.dockerfile -t timvh/funapi ./Fun.Api"
+                    sh 'docker build --file ./Fun.Api/funapi.dockerfile -t timvh/funapi:latest -t timvh/funapi:v1.${version} ./Fun.Api'
+                    sh "docker login -u $user -p $password"                    
                     sh "docker push timvh/funapi"
                     sh "docker logout"
-                }
+                    sh 'git tag funapi-v1.${version}'
+                    sh 'git push origin funapi-v1.${version}'
+                }                
             }
         }
     }    
