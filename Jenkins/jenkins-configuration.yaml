@@ -3,6 +3,7 @@ unclassified:
     url: ${JENKINS_URL}
 
 jenkins:
+  systemMessage: "Version: 1.0.0"
   securityRealm:
     local:
       allowsSignup: false
