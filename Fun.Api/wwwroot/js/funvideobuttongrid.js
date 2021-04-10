@@ -75,8 +75,9 @@
 
     async addVideoButtons() {
         let videos = await this.getVideos();
+        let buttonTemplate = this.querySelector(".button-template");
         videos.forEach(video => {
-            let button = document.createElement("fun-video-button");
+            let button = buttonTemplate.content.cloneNode(true).firstElementChild;
             button.title = video.name;
             button.thumbnailUrl = video.thumbnail;
             button.videoUrl = video.url;

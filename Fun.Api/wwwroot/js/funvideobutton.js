@@ -15,15 +15,12 @@
     connectedCallback() {
         this.apiBaseUrl = this.apiBaseUrl ?? "";
 
-        this.button = document.createElement("button");
+        this.button = this.querySelector("button");
         this.button.style.backgroundImage = `url('${this.thumbnailUrl}')`;
         this.button.onclick = this.videoButton_onclick;
 
-        this.titleBar = document.createElement("span");
+        this.titleBar = this.querySelector("span");
         this.titleBar.textContent = this.title;
-
-        this.button.appendChild(this.titleBar);
-        this.appendChild(this.button);
     }
 
     videoButton_onclick = () => {

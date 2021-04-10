@@ -13,6 +13,5 @@ fun-video-button button {
 }
 
     fun-video-button button span {
-        background-color: white;
-        padding: 0.2%;
+        max-width: 90%;
     }
