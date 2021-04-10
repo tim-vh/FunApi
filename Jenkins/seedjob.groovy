@@ -9,7 +9,7 @@ pipelineJob('build-master') {
           branch('*/master')
         }
       }
-      scriptPath('CiCd/jenkinsfile')
+      scriptPath('jenkinsfile')
       lightweight()
     }
   }
