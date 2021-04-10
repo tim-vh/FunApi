@@ -1,0 +1,21 @@
+pipeline{
+    agent any
+        stages{
+        stage('checkout') {
+            steps {
+                cleanWs()
+                checkout scm
+            }
+        }        
+        stage("publish"){
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'user', passwordVariable: 'password')]) {
+                    sh "docker login -u $user -p $password"
+                    sh "docker build --file ./Jenkins/jenkins.dockerfile -t timvh/funapi_jenkins ./Jenkins"
+                    sh "docker push timvh/funapi_jenkins"
+                    sh "docker logout"
+                }
+            }
+        }
+    }    
+}
