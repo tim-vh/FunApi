@@ -12,7 +12,7 @@ pipeline{
         }
         stage("build"){
             steps{
-                sh 'dotnet build --configuration Release'
+                sh 'dotnet publish --configuration Release'
             }
         }
         stage("test"){

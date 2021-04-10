@@ -11,15 +11,4 @@
   <ItemGroup>
     <Folder Include="wwwroot\videos\thumbnails\" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Update="wwwroot\css\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 </Project>
