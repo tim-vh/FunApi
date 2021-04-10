@@ -1,12 +1,10 @@
 ﻿class FunVideoPlayer extends HTMLElement {
 
-    get url() {
-        return this.getAttribute("url");
-    }
+    get url() { return this.getAttribute("url"); }
+    set url(value) { this.setAttribute("url", value); }
 
-    set url(value) {
-        this.setAttribute("url", value);
-    }
+    get connectbutton() { return this.getAttribute("connectbutton"); }
+    set connectbutton(value) { this.setAttribute("connectbutton", value); }
 
     connectedCallback() {
         this.connected = false;
@@ -16,14 +14,14 @@
     }
 
     setupConnectionButton() {
-        this.connectionButton = this.querySelector("fun-connection-button");
+        this.connectionButton = document.getElementById(this.connectbutton);
         this.connectionButton.onclick = this.connectionButton_onclick;
     }
 
     createVideoElement() {
         this.videoPlayer = document.createElement("video");
         this.videoPlayer.setAttribute("controls", "controls");
-        this.videoPlayer.style.visibility = "hidden";
+        this.style.display = "none";
         this.appendChild(this.videoPlayer);
     }
 
@@ -59,7 +57,7 @@
             await this.connection.start();
             this.connected = true;
             this.connectionButton.setConnected();
-            this.videoPlayer.style.visibility = "visible";
+            this.style.display = "block";
         }
     }
 
@@ -69,7 +67,7 @@
             this.connected = false;
             this.videoPlayer.pause();
             this.connectionButton.setDisconnected();
-            this.videoPlayer.style.visibility = "hidden";
+            this.style.display = "none";
         }
     }
 }

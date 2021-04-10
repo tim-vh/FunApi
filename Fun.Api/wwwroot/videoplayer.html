@@ -12,21 +12,15 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Fun</a>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                </li>
-            </ul>
+            <fun-connection-button id="connect-button" disconnectedclass="btn-outline-success" connectedclass="btn-outline-danger">
+                <button class="btn btn-sm"></button>
+            </fun-connection-button>
         </div>
     </nav>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm">
-                <fun-video-player url="videohub">
-                    <fun-connection-button disconnectedclass="btn-succes" connectedclass="btn-danger">
-                        <button class="btn btn-success"></button>
-                    </fun-connection-button>
-                </fun-video-player>
-            </div>
+            <fun-video-player url="videohub" connectbutton="connect-button" class="col-sm">
+            </fun-video-player>
             <div class="col-sm">
                 <fun-video-button-grid>
                     <div class="form-group row">
