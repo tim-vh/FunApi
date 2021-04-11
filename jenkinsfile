@@ -1,10 +1,10 @@
 pipeline{
     agent any
     parameters {
-        booleanParam(name: "PUBLISH", defaultValue: false)
+        booleanParam(name: 'PUBLISH', defaultValue: false)
     }
     environment {
-        version = sh(script: 'date +%y.%j.%H%M', returnStdout: true)
+        VERSION = sh(script: 'date +%y.%j.%H%M', returnStdout: true)
     }
 
     stages{
@@ -14,30 +14,33 @@ pipeline{
                 checkout scm
             }
         }
-        stage("build"){
+        stage('build'){
             steps{
-                sh 'dotnet publish --configuration Release /p:Version=1.0.0.0 /p:FileVersion=1.${version}'
+                sh 'dotnet publish --configuration Release /p:Version=1.0.0.0 /p:FileVersion=1.${VERSION}'
             }
         }
-        stage("test"){
+        stage('test'){
             steps{
                 sh 'dotnet test --no-build --configuration Release --settings coverlet.runsettings'
                 cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: '**/Fun.Api.Tests/TestResults/*/coverage.cobertura.xml', conditionalCoverageTargets: '70, 0, 0', failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
             }
         }
-        stage("publish"){
+        stage('publish'){
             when { 
                 expression { params.PUBLISH } 
             }
             steps{
-                withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'user', passwordVariable: 'password')]) {
-                    sh 'docker build --file ./Fun.Api/funapi.dockerfile -t timvh/funapi:latest -t timvh/funapi:v1.${version} ./Fun.Api'
-                    sh "docker login -u $user -p $password"                    
-                    sh "docker push timvh/funapi"
-                    sh "docker logout"
-                    sh 'git tag funapi-v1.${version}'
-                    sh 'git push origin funapi-v1.${version}'
-                }                
+                 sh 'docker build --file ./Fun.Api/funapi.dockerfile -t timvh/funapi:latest -t timvh/funapi:v1.${VERSION} ./Fun.Api'
+                withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {                   
+                    sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
+                    sh 'docker push timvh/funapi:v1.${VERSION}'
+                    sh 'docker push timvh/funapi:latest'
+                    sh 'docker logout'
+                }
+                withCredentials([usernamePassword(credentialsId: 'GitHub', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                    sh 'git tag funapi-v1.${VERSION}'
+                    sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/tim-vh/FunApi.git --tags')
+                }
             }
         }
     }    
