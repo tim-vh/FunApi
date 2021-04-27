@@ -1,4 +1,4 @@
-﻿namespace Fun.Api.Model
+﻿namespace Fun.Api.ApiModel
 {
     public class Video
     {

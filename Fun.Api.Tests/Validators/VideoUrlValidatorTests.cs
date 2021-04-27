@@ -4,7 +4,7 @@ using Moq;
 using System.Collections.Generic;
 using Xunit;
 using FluentAssertions;
-using Fun.Api.Model;
+using Fun.Api.ApiModel;
 
 namespace Fun.Api.Tests.Validators
 {

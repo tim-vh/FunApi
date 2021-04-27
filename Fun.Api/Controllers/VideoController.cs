@@ -1,9 +1,10 @@
-﻿using Fun.Api.Model;
-using Fun.Api.Services;
-using Fun.Api.Validators;
+﻿using Fun.Api.DataModel;
+using Fun.Api.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Provocq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace Fun.Api.Controllers
@@ -12,27 +13,25 @@ namespace Fun.Api.Controllers
     [ApiController]
     public class VideoController : ControllerBase
     {
-        private readonly IGetVideosQuery _getVideosQuery;
-        private readonly IVideoUrlValidator _videoUrlValidator;
+        private readonly BlockingDataHandler<FunDataContext> _dataHandler;
         private readonly IHubContext<VideoHub> _videoHubContext;
 
         public VideoController(
-            IGetVideosQuery getVideosQuery,
-            IVideoUrlValidator videoUrlValidator,
-            IHubContext<VideoHub> videoHubContext)
+            IHubContext<VideoHub> videoHubContext,
+            BlockingDataHandler<FunDataContext> dataHandler) // TODO: use interface
         {
-            _getVideosQuery = getVideosQuery ?? throw new System.ArgumentNullException(nameof(getVideosQuery));
-            _videoUrlValidator = videoUrlValidator ?? throw new System.ArgumentNullException(nameof(videoUrlValidator));
             _videoHubContext = videoHubContext ?? throw new System.ArgumentNullException(nameof(videoHubContext));
+            _dataHandler = dataHandler ?? throw new System.ArgumentNullException(nameof(dataHandler));
         }
 
         [HttpGet("play/{url}")]
-        public ActionResult Play(string url)
+        public async Task<ActionResult> Play(string url)
         {
             url = HttpUtility.UrlDecode(url);
-            if (_videoUrlValidator.Validate(url))
+            var videoExistsQuery = new VideoExistsQuery(url);
+            if (await _dataHandler.ExecuteQuery(videoExistsQuery))
             {
-                _videoHubContext.Clients.All.SendAsync("PlayVideo", url).ConfigureAwait(false);
+                _ = _videoHubContext.Clients.All.SendAsync("PlayVideo", url).ConfigureAwait(false);
 
                 return new NoContentResult();
             }
@@ -48,9 +47,10 @@ namespace Fun.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Video>> GetVideos()
+        public async Task<ActionResult<IEnumerable<ApiModel.Video>>> GetVideos()
         {
-            var videos = _getVideosQuery.Execute();
+            var query = new GetVideosQuery();
+            var videos = await _dataHandler.ExecuteQuery(query);
             return Ok(videos);
         }
     }

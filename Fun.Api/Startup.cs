@@ -1,13 +1,13 @@
-﻿using Fun.Api.Helpers;
+﻿using Fun.Api.DataModel;
+using Fun.Api.Helpers;
+using Fun.Api.Persistance;
 using Fun.Api.Services;
-using Fun.Api.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NLog;
+using Provocq;
 
 namespace Fun.Api
 {
@@ -33,12 +33,15 @@ namespace Fun.Api
             }));
 
             services.AddRazorPages();
-            services.AddMvc(options => { options.Filters.Add(typeof(ExceptionLogger)); });
+            services.AddMvc(options => options.Filters.Add(typeof(ExceptionLogger)));
             services.AddSingleton(Configuration);
-            services.AddScoped<IVideoUrlValidator, VideoUrlValidator>();
-            services.AddScoped<IGetVideosQuery, GetVideosQuery>();
             services.AddSignalR();
             services.AddHttpContextAccessor();
+
+            services.AddTransient<IGetVideosQuery, GetVideosQuery>(); // TODO: remove
+
+            services.AddSingleton<IPersistor<FunDataContext>, InitializingJsonPersistor>();
+            services.AddSingleton<BlockingDataHandler<FunDataContext>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
