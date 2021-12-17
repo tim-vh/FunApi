@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fun video player</title>
-    <link rel='shortcut icon' type='image/x-icon' href='funny.ico' />
+    <link rel="shortcut icon" type="image/x-icon" href="funny.ico" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="css/videoplayer.css" />
 </head>
@@ -15,12 +15,14 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
             <fun-connection-button id="connect-button" disconnectedclass="btn-outline-success" connectedclass="btn-outline-danger">
                 <button class="btn btn-sm"></button>
             </fun-connection-button>
         </div>
-    </nav>
-    <div class="container-fluid">
         <div class="row">
             <fun-video-player url="videohub" connectbutton="connect-button" class="col-sm">
             </fun-video-player>

@@ -28,7 +28,7 @@ namespace Fun.Api
             services.AddCors(options => options.AddPolicy(FunApiCorsPolicy, builder =>
             {
                 builder.WithOrigins("*")
-                        .AllowAnyMethod()
+                        .WithMethods("GET")
                         .AllowAnyHeader();
             }));
 

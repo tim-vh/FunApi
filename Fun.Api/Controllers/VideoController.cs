@@ -1,4 +1,5 @@
-﻿using Fun.Api.DataModel;
+﻿using Fun.Api.ApiModel;
+using Fun.Api.Commands;
 using Fun.Api.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -6,6 +7,7 @@ using Provocq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
+using FunDataContext = Fun.Api.DataModel.FunDataContext;
 
 namespace Fun.Api.Controllers
 {
@@ -47,11 +49,21 @@ namespace Fun.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ApiModel.Video>>> GetVideos()
+        public async Task<ActionResult<IEnumerable<Video>>> GetVideos()
         {
             var query = new GetVideosQuery();
             var videos = await _dataHandler.ExecuteQuery(query);
             return Ok(videos);
+        }
+
+        [HttpPost(Name = nameof(PostVideo))]
+        public async Task<ActionResult> PostVideo(Video video)
+        {
+            var command = new AddVideoCommand(video);
+            await _dataHandler.ExecuteCommand(command);
+
+            return Ok(); // TODO: use CreatedAtAction
+
         }
     }
 }
