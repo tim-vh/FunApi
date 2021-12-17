@@ -37,10 +37,9 @@ pipeline{
                     sh 'docker push timvh/funapi:latest'
                     sh 'docker logout'
                 }
-                withCredentials([usernamePassword(credentialsId: 'GitHub', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                    sh 'git tag funapi-v1.${VERSION}'
-                    sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/tim-vh/FunApi.git --tags')
-                }
+                
+                sh 'git tag funapi-v1.${VERSION}'
+                sh('git push --tags')                
             }
         }
     }    

@@ -4,7 +4,7 @@ pipelineJob('build-funapi-master') {
       scm {
         git {
           remote {
-            url('https://github.com/tim-vh/FunApi.git')
+            url('git@github.com:tim-vh/FunApi.git')
           }
           branch('*/master')
         }
@@ -21,7 +21,7 @@ pipelineJob('build-jenkins-master') {
       scm {
         git {
           remote {
-            url('https://github.com/tim-vh/FunApi.git')
+            url('git@github.com:tim-vh/FunApi.git')
           }
           branch('*/master')
         }
