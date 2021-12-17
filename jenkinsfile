@@ -38,8 +38,11 @@ pipeline{
                     sh 'docker logout'
                 }
                 
-                sh 'git tag funapi-v1.${VERSION}'
-                sh('git push git@github.com:tim-vh/FunApi.git --tags')                
+                withCredentials([sshUserPrivateKey(credentialsId: "GitHub", keyFileVariable: 'key')]) {
+                    sh 'git tag funapi-v1.${VERSION}'
+                    sh 'GIT_SSH_COMMAND = "ssh -i $key"'
+                    sh('git push --tags')                
+                }
             }
         }
     }    
