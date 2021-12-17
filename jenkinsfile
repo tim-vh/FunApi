@@ -39,7 +39,7 @@ pipeline{
                 }
                 
                 sh 'git tag funapi-v1.${VERSION}'
-                sh('git push --tags')                
+                sh('git push git@github.com:tim-vh/FunApi.git --tags')                
             }
         }
     }    
