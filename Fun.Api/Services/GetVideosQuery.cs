@@ -1,4 +1,4 @@
-﻿using Fun.Api.DataModel;
+﻿using Fun.Api.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +8,6 @@ using System.Linq;
 
 namespace Fun.Api.Services
 {
-    // TODO: remove
     public class GetVideosQuery : IGetVideosQuery
     {
         private readonly IConfiguration _configuration;

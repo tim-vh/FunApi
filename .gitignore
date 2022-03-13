@@ -353,8 +353,8 @@ MigrationBackup/
 # exe files
 *.exe
 
-# fun video folder
+# video folder
 Fun.Api/wwwroot/videos/*
 
-# fun data folder
-Fun.Api/AppData
+# www root lib folder
+Fun.Api/wwwroot/lib/*
