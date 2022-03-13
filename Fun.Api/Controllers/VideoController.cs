@@ -1,5 +1,4 @@
 ﻿using Fun.Api.Model;
-using Fun.Api.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -13,16 +12,13 @@ namespace Fun.Api.Controllers
     public class VideoController : ControllerBase
     {
         private readonly IVideoCatalog _videoCatalog;
-        private readonly IVideoUrlValidator _videoUrlValidator;
         private readonly IHubContext<VideoHub> _videoHubContext;
 
         public VideoController(
             IVideoCatalog videoCatalog,
-            IVideoUrlValidator videoUrlValidator,
             IHubContext<VideoHub> videoHubContext)
         {
             _videoCatalog = videoCatalog ?? throw new ArgumentNullException(nameof(videoCatalog));
-            _videoUrlValidator = videoUrlValidator ?? throw new ArgumentNullException(nameof(videoUrlValidator));
             _videoHubContext = videoHubContext ?? throw new ArgumentNullException(nameof(videoHubContext));
         }
 
@@ -30,9 +26,10 @@ namespace Fun.Api.Controllers
         public ActionResult Play(string url)
         {
             url = HttpUtility.UrlDecode(url);
-            if (_videoUrlValidator.Validate(url))
+            var video = _videoCatalog.GetVideo(url);
+            if (video != null)
             {
-                _videoHubContext.Clients.All.SendAsync("PlayVideo", url).ConfigureAwait(false);
+                video.Play(_videoHubContext);
 
                 return new NoContentResult();
             }

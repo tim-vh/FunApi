@@ -5,5 +5,7 @@ namespace Fun.Api.Model
     public interface IVideoCatalog
     {
         IEnumerable<Video> GetVideos();
+
+        Video GetVideo(string url);
     }
 }

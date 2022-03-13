@@ -2,7 +2,7 @@
 using Fun.Api.Model;
 using Fun.Api.Repositories.Wwwroot;
 using Fun.Api.Repositories.Wwwroot.Queries;
-using Fun.Api.Validators;
+using Fun.Api.Repositories.Youtube;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -37,7 +37,7 @@ namespace Fun.Api
             services.AddSingleton(Configuration);
             services.AddScoped<IVideoCatalog, VideoCatalog>();
             services.AddScoped<IVideoRepository, WwwrootVideoRepository>();
-            services.AddScoped<IVideoUrlValidator, VideoUrlValidator>();
+            services.AddScoped<IVideoRepository, YoutubeVideoRepository>();
             services.AddScoped<GetVideosFromWwwrootQuery, GetVideosFromWwwrootQuery>();
             services.AddSignalR();
             services.AddHttpContextAccessor();

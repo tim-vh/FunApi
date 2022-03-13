@@ -14,16 +14,16 @@ namespace Fun.Api.Model
 
         public IEnumerable<Video> GetVideos()
         {
-            var videos = new List<Video>();
-
-            foreach (var repository in _repositories)
-            {
-                videos.AddRange(repository.GetVideos());
-            }
+            var videos = _repositories.SelectMany(r => r.GetVideos()).ToList();
 
             videos.Sort((a, b) => a.Name.CompareTo(b.Name));
 
             return videos;
+        }
+
+        public Video GetVideo(string url)
+        {
+            return _repositories.Select(r => r.GetVideo(url)).FirstOrDefault();
         }
     }
 }
