@@ -1,12 +1,12 @@
 ﻿using Fun.Api.Model;
-using Fun.Api.Queries;
+using Fun.Api.Repositories.Wwwroot.Queries;
 using System.Collections.Generic;
 
-namespace Fun.Api.Repositories
+namespace Fun.Api.Repositories.Wwwroot
 {
     public class WwwrootVideoRepository : IVideoRepository
     {
-        private readonly IGetVideosQuery _getVideosQuery;
+        private readonly GetVideosFromWwwrootQuery _getVideosQuery;
 
         public WwwrootVideoRepository(GetVideosFromWwwrootQuery getVideosQuery)
         {

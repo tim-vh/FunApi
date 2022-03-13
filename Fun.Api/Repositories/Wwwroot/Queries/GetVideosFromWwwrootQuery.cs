@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Fun.Api.Queries
+namespace Fun.Api.Repositories.Wwwroot.Queries
 {
-    public class GetVideosFromWwwrootQuery : IGetVideosQuery
+    public class GetVideosFromWwwrootQuery
     {
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;

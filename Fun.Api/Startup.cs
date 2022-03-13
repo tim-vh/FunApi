@@ -1,15 +1,13 @@
 ﻿using Fun.Api.Helpers;
 using Fun.Api.Model;
-using Fun.Api.Queries;
-using Fun.Api.Repositories;
+using Fun.Api.Repositories.Wwwroot;
+using Fun.Api.Repositories.Wwwroot.Queries;
 using Fun.Api.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NLog;
 
 namespace Fun.Api
 {
