@@ -9,7 +9,7 @@ using NLog;
 
 namespace Fun.Api
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -34,7 +34,6 @@ namespace Fun.Api
             {
                 LogManager.Shutdown();
             }
-
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args, IConfigurationRoot config)

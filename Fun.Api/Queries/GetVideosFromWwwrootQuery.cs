@@ -6,14 +6,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Fun.Api.Services
+namespace Fun.Api.Queries
 {
-    public class GetVideosQuery : IGetVideosQuery
+    public class GetVideosFromWwwrootQuery : IGetVideosQuery
     {
         private readonly IConfiguration _configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GetVideosQuery(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public GetVideosFromWwwrootQuery(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
@@ -23,7 +23,7 @@ namespace Fun.Api.Services
         {
             var rootFolder = _configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
             var test = WebHostDefaults.WebRootKey;
-            var files = Directory.GetFiles(Path.Combine(rootFolder, "wwwroot/videos"), "*.mp4");
+            string[] files = GetFiles(rootFolder);
 
             var baseUrl = _httpContextAccessor.HttpContext.Request.Scheme + "://" + _httpContextAccessor.HttpContext.Request.Host;
 
@@ -36,6 +36,17 @@ namespace Fun.Api.Services
                         .Replace("-", " ")
                         .Trim()
             });
+        }
+
+        private static string[] GetFiles(string rootFolder)
+        {
+            var path = Path.Combine(rootFolder, "wwwroot/videos");
+            if(!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            return Directory.GetFiles(path, "*.mp4");
         }
     }
 }

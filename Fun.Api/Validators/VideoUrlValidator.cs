@@ -1,20 +1,21 @@
-﻿using Fun.Api.Services;
+﻿using Fun.Api.Model;
+using System;
 using System.Linq;
 
 namespace Fun.Api.Validators
 {
     public class VideoUrlValidator : IVideoUrlValidator
     {
-        private readonly IGetVideosQuery _videosQuery;
+        private readonly IVideoCatalog _videoCatalog;
 
-        public VideoUrlValidator(IGetVideosQuery videosQuery)
+        public VideoUrlValidator(IVideoCatalog videoCatalog)
         {
-            _videosQuery = videosQuery;
+            _videoCatalog = videoCatalog ?? throw new ArgumentNullException(nameof(videoCatalog));
         }
 
         public bool Validate(string url)
         {
-            var videos = _videosQuery.Execute();
+            var videos = _videoCatalog.GetVideos();
             return videos.Any(v => v.Url == url);
         }
     }

@@ -1,5 +1,7 @@
 ﻿using Fun.Api.Helpers;
-using Fun.Api.Services;
+using Fun.Api.Model;
+using Fun.Api.Queries;
+using Fun.Api.Repositories;
 using Fun.Api.Validators;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,7 +15,7 @@ namespace Fun.Api
 {
     public class Startup
     {
-        private readonly string FunApiCorsPolicy = "FunApiCorsPolicy";
+        private readonly string _funApiCorsPolicy = "FunApiCorsPolicy";
 
         public Startup(IConfiguration configuration)
         {
@@ -25,7 +27,7 @@ namespace Fun.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy(FunApiCorsPolicy, builder =>
+            services.AddCors(options => options.AddPolicy(_funApiCorsPolicy, builder =>
             {
                 builder.WithOrigins("*")
                         .AllowAnyMethod()
@@ -33,10 +35,12 @@ namespace Fun.Api
             }));
 
             services.AddRazorPages();
-            services.AddMvc(options => { options.Filters.Add(typeof(ExceptionLogger)); });
+            services.AddMvc(options => options.Filters.Add(typeof(ExceptionLogger)));
             services.AddSingleton(Configuration);
+            services.AddScoped<IVideoCatalog, VideoCatalog>();
+            services.AddScoped<IVideoRepository, WwwrootVideoRepository>();
             services.AddScoped<IVideoUrlValidator, VideoUrlValidator>();
-            services.AddScoped<IGetVideosQuery, GetVideosQuery>();
+            services.AddScoped<GetVideosFromWwwrootQuery, GetVideosFromWwwrootQuery>();
             services.AddSignalR();
             services.AddHttpContextAccessor();
         }
@@ -49,7 +53,7 @@ namespace Fun.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(FunApiCorsPolicy);
+            app.UseCors(_funApiCorsPolicy);
 
             app.UseRouting();
 

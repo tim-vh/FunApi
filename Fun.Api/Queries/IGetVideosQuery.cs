@@ -1,7 +1,7 @@
 ﻿using Fun.Api.Model;
 using System.Collections.Generic;
 
-namespace Fun.Api.Services
+namespace Fun.Api.Queries
 {
     public interface IGetVideosQuery
     {
