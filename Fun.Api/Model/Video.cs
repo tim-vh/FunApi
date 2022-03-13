@@ -4,15 +4,22 @@ namespace Fun.Api.Model
 {
     public class Video
     {
+        private const string PlayCommand = "PlayVideo";
+
         public string Name { get; set; }
 
         public string Url { get; set; }
 
         public string Thumbnail { get; set; }
 
-        public void Play(IHubContext<VideoHub> videoHubContext)
+        public virtual void Play(IHubContext<VideoHub> videoHubContext)
         {
-            videoHubContext.Clients.All.SendAsync("PlayVideo", Url).ConfigureAwait(false);
+            SendPlayMessageToClients(videoHubContext, Url);
+        }
+
+        protected void SendPlayMessageToClients(IHubContext<VideoHub> videoHubContext, string url)
+        {
+            videoHubContext.Clients.All.SendAsync(PlayCommand, url).ConfigureAwait(false);
         }
     }
 }

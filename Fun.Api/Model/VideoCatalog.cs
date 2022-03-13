@@ -23,7 +23,7 @@ namespace Fun.Api.Model
 
         public Video GetVideo(string url)
         {
-            return _repositories.Select(r => r.GetVideo(url)).FirstOrDefault();
+            return _repositories.Select(r => r.GetVideo(url)).FirstOrDefault(v => v != null);
         }
     }
 }

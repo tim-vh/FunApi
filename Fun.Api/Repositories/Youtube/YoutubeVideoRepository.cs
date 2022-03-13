@@ -1,4 +1,5 @@
 ﻿using Fun.Api.Model;
+using Fun.Api.Repositories.Youtube.Model;
 using System.Collections.Generic;
 
 namespace Fun.Api.Repositories.Youtube
@@ -7,7 +8,7 @@ namespace Fun.Api.Repositories.Youtube
     {
         public Video GetVideo(string url)
         {
-            return new Video
+            return new YoutubeVideo
             {
                 Name = "YT test",
                 Url = "https://www.youtube.com/watch?v=xuYRglBC-Vs&list=RDxuYRglBC-Vs&start_radio=1"
@@ -18,7 +19,7 @@ namespace Fun.Api.Repositories.Youtube
         {
             return new List<Video>
             {
-                new Video
+                new YoutubeVideo
                 {
                     Name = "YT test",
                     Url = "https://www.youtube.com/watch?v=xuYRglBC-Vs&list=RDxuYRglBC-Vs&start_radio=1"
