@@ -41,6 +41,7 @@ namespace Fun.Api
             services.AddScoped<GetVideosFromWwwrootQuery, GetVideosFromWwwrootQuery>();
             services.AddSignalR();
             services.AddHttpContextAccessor();
+            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +59,9 @@ namespace Fun.Api
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseStaticFiles();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             app.UseEndpoints(endpoints =>
             {
