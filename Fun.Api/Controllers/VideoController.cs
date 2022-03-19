@@ -1,4 +1,5 @@
 ﻿using Fun.Api.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -9,6 +10,7 @@ namespace Fun.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VideoController : ControllerBase
     {
         private readonly IVideoCatalog _videoCatalog;
