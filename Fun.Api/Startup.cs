@@ -33,38 +33,17 @@ namespace Fun.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            //services.AddAuthentication(x =>
-            //{
-            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //}).AddJwtBearer(o =>
-            //{
-            //    //var Key = Encoding.UTF8.GetBytes(Configuration["JWT:Key"]);
-            //    //var Key = Encoding.UTF8.GetBytes("Test123Test123Test123Test123Test123Test123Test123");
-            //    o.SaveToken = true;
-            //    o.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuer = false,
-            //        ValidateAudience = false,
-            //        ValidateLifetime = true,
-            //        ValidateIssuerSigningKey = true,
-            //        ValidIssuer = Configuration["JWT:Issuer"],
-            //        ValidAudience = Configuration["JWT:Audience"],
-            //        IssuerSigningKey = new SymmetricSecurityKey(Key),
-            //    };
-            //});
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
+            })
+            .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisKeyMustBeAtLeast16Characters")),
+                    IssuerSigningKey = new SymmetricSecurityKey(Key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidateLifetime = true,
@@ -88,39 +67,13 @@ namespace Fun.Api
             services.AddScoped<GetVideosFromWwwrootQuery, GetVideosFromWwwrootQuery>();
             services.AddSignalR();
             services.AddHttpContextAccessor();
-            //services.AddOpenApiDocument();
-            //services.AddSwaggerDocument(document =>
-            //{
-            //    document.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
-            //    {
-            //        Type = OpenApiSecuritySchemeType.ApiKey,
-            //        Name = "Authorization",
-            //        In = OpenApiSecurityApiKeyLocation.Header,
-            //        Description = "Type into the textbox: Bearer {your JWT token}."
-            //    });
-
-            //    document.OperationProcessors.Add(
-            //        new AspNetCoreOperationSecurityScopeProcessor("JWT"));
-            //});
-
+            
             services.AddControllers();
 
             services.AddEndpointsApiExplorer();
             services.AddOpenApiDocument(document =>
             {
-
-                //document.AddSecurity("jwt_auth", new OpenApiSecurityScheme
-                //{
-                //    Name = "Bearer",
-                //    Type = OpenApiSecuritySchemeType.Http,
-                //    In = OpenApiSecurityApiKeyLocation.Header,
-                //    Scheme = "Bearer",
-                //    BearerFormat = "JWT",
-                //    Description = "Copy 'Bearer ' + valid JWT token into field",
-
-                //});
-
-                document.AddSecurity("Bearer", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+                document.AddSecurity("Bearer", new OpenApiSecurityScheme
                 {
                     Type = OpenApiSecuritySchemeType.Http,
                     Scheme = JwtBearerDefaults.AuthenticationScheme,
@@ -128,16 +81,8 @@ namespace Fun.Api
                     Description = "Type into the textbox: {your JWT token}."
                 });
 
-                document.OperationProcessors.Add(
-                    new AspNetCoreOperationSecurityScopeProcessor("Bearer"));
-            });
-
-            //services.AddAuthorization(options => { }
-
-
-            //);
-
-            //services.AddSingleton<IJWTManagerRepository, JWTManagerRepository>();
+                document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("Bearer"));
+            });            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -153,7 +98,7 @@ namespace Fun.Api
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();            
+            app.UseAuthorization();
 
             app.UseStaticFiles();
 
