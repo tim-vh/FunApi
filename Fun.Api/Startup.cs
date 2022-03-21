@@ -6,6 +6,7 @@ using Fun.Api.Repositories.Youtube;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +16,7 @@ using NSwag.Generation.Processors.Security;
 using System;
 using System.Linq;
 using System.Text;
+
 
 namespace Fun.Api
 {
@@ -33,6 +35,14 @@ namespace Fun.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = false;
+            });
+
+            services.AddTransient<IUserStore<IdentityUser>, FunUserStore>();
+            services.AddTransient<IRoleStore<IdentityRole>, FunUserStore>();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Fun.Api.Controllers
 {
@@ -10,13 +13,31 @@ namespace Fun.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate(string username, string password)
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public UserController(SignInManager<IdentityUser> signInManager)
         {
-            string token;
+            _signInManager = signInManager;
+        }
 
-            token = GenerateToken(username);
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] LoginCredentials loginCredentials)
+        {
+            var user = await _signInManager.UserManager.FindByNameAsync("Tim");
+            var check = await _signInManager.CheckPasswordSignInAsync(user, loginCredentials.Password, false);
+            //var result = await _signInManager.PasswordSignInAsync(loginCredentials.Username, loginCredentials.Password, true, false);
 
+            
+
+            //await _signInManager.SignInWithClaimsAsync(new IdentityUser(), true, Enumerable.Empty<Claim>());
+
+            var userprincipal = await _signInManager.CreateUserPrincipalAsync(user);
+            
+
+
+            //var token = GenerateToken(loginCredentials.Username);
+            var token = GenerateTokenFromClaims(userprincipal);
             return Ok(token);
         }
 
@@ -35,6 +56,31 @@ namespace Fun.Api.Controllers
             var securitytoken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(securitytoken);
             return token;
+        }
+
+        private static string GenerateTokenFromClaims(ClaimsPrincipal claimsPrincipal)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claimsPrincipal.Claims),
+                Expires = DateTime.UtcNow.AddMinutes(10),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Startup.Key), SecurityAlgorithms.HmacSha256Signature),    
+                
+            };
+
+            
+
+            var securitytoken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.WriteToken(securitytoken);
+            return token;
+        }
+
+        public class LoginCredentials
+        {
+            public string Username { get; set; }
+
+            public string Password { get; set; }
         }
     }
 }
