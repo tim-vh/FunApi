@@ -16,46 +16,46 @@ namespace Fun.Api.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public UserController(SignInManager<IdentityUser> signInManager)
+        public UserController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] LoginCredentials loginCredentials)
         {
-            var user = await _signInManager.UserManager.FindByNameAsync("Tim");
-            var check = await _signInManager.CheckPasswordSignInAsync(user, loginCredentials.Password, false);
-            //var result = await _signInManager.PasswordSignInAsync(loginCredentials.Username, loginCredentials.Password, true, false);
+            var user = await _signInManager.UserManager.FindByNameAsync(loginCredentials.Username);
+            if (user != null)
+            {
+                var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginCredentials.Password, false);
 
-            
+                if (signInResult.Succeeded)
+                {
+                    var userprincipal = await _signInManager.CreateUserPrincipalAsync(user);
 
-            //await _signInManager.SignInWithClaimsAsync(new IdentityUser(), true, Enumerable.Empty<Claim>());
+                    var token = GenerateTokenFromClaims(userprincipal);
+                    return Ok(token);
+                }
+            }
 
-            var userprincipal = await _signInManager.CreateUserPrincipalAsync(user);
-            
-
-
-            //var token = GenerateToken(loginCredentials.Username);
-            var token = GenerateTokenFromClaims(userprincipal);
-            return Ok(token);
+            return Forbid();
         }
 
-        private static string GenerateToken(string username)
+        [HttpPost]
+        public async Task<IActionResult> Register([FromBody] UserRegistration userRegistration)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var tokenDescriptor = new SecurityTokenDescriptor
+            var user = new IdentityUser(userRegistration.Username);
+            var result = await _userManager.CreateAsync(user, userRegistration.Password);
+            
+            if (result.Succeeded)
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, username)
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(10),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Startup.Key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var securitytoken = tokenHandler.CreateToken(tokenDescriptor);
-            var token = tokenHandler.WriteToken(securitytoken);
-            return token;
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
         }
 
         private static string GenerateTokenFromClaims(ClaimsPrincipal claimsPrincipal)
@@ -68,15 +68,20 @@ namespace Fun.Api.Controllers
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Startup.Key), SecurityAlgorithms.HmacSha256Signature),    
                 
             };
-
-            
-
+           
             var securitytoken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(securitytoken);
             return token;
         }
 
         public class LoginCredentials
+        {
+            public string Username { get; set; }
+
+            public string Password { get; set; }
+        }
+
+        public class UserRegistration
         {
             public string Username { get; set; }
 

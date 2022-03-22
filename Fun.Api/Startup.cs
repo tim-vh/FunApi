@@ -1,4 +1,6 @@
-﻿using Fun.Api.Helpers;
+﻿using Fun.Api.DataModel;
+using Fun.Api.Helpers;
+using Fun.Api.Identity;
 using Fun.Api.Model;
 using Fun.Api.Repositories.Wwwroot;
 using Fun.Api.Repositories.Wwwroot.Queries;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using Provocq;
 using System;
 using System.Linq;
 using System.Text;
@@ -75,6 +78,8 @@ namespace Fun.Api
             services.AddScoped<IVideoRepository, WwwrootVideoRepository>();
             services.AddScoped<IVideoRepository, YoutubeVideoRepository>();
             services.AddScoped<GetVideosFromWwwrootQuery, GetVideosFromWwwrootQuery>();
+            services.AddTransient<IPersistor<IdentityDataContext>>(_ => new JsonFilePersistor<IdentityDataContext>("userdata.json"));
+            services.AddSingleton<BlockingDataHandler<IdentityDataContext>>();
             services.AddSignalR();
             services.AddHttpContextAccessor();
             
