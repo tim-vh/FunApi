@@ -1,61 +1,83 @@
 ﻿using Fun.Api.Commands;
 using Fun.Api.DataModel;
 using Fun.Api.Queries;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Identity;
 using Provocq;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fun.Api.Identity
 {
-    public class FunUserStore : IUserStore<IdentityUser>, IRoleStore<IdentityRole>, IUserPasswordStore<IdentityUser>, IUserRoleStore<IdentityUser>
+    public class FunUserStore : IUserStore<ApplicationUser>, IRoleStore<IdentityRole>, IUserPasswordStore<ApplicationUser>, IUserRoleStore<ApplicationUser>
     {
         private readonly BlockingDataHandler<IdentityDataContext> _datacontextWrapper;
 
         public FunUserStore(BlockingDataHandler<IdentityDataContext> datacontextWrapper)
         {
             _datacontextWrapper = datacontextWrapper;
-            //IPasswordHasher<IdentityUser> hasher
-
-
-            //var test = new PasswordHasher<IdentityUser>();
-            //test.has
-            //new IdentityUser 
-            //var user = new IdentityUser()
-            //{
-            //    Id = "1",
-            //    UserName = "Tim",
-            //    NormalizedUserName = "TIM",
-            //    Email = "test@test-mail.test",
-            //};
-
-            //user.PasswordHash = hasher.HashPassword(user, "Test123");
-
-            //_users.Add(user);
         }
 
-        public Task AddToRoleAsync(IdentityUser user, string roleName, CancellationToken cancellationToken)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<IdentityResult> CreateAsync(IdentityUser user, CancellationToken cancellationToken)
+        public async Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             await _datacontextWrapper.ExecuteCommand(new CreateUserCommand { User = user });
             return IdentityResult.Success;
         }
 
-        public Task<IdentityResult> CreateAsync(IdentityRole role, CancellationToken cancellationToken)
+        public Task<ApplicationUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            //ILookupNormalizer
+            return _datacontextWrapper.ExecuteQuery(new FindUserByNameQuery { NormalizedUserName = normalizedUserName });
+        }
 
+        public Task<string> GetPasswordHashAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.PasswordHash);
+        }
+
+        public Task<IList<string>> GetRolesAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult<IList<string>>(new List<string>());
+        }
+
+        public Task<string> GetUserIdAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.Id);
+        }
+
+        public Task<string> GetUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(user.UserName);
+        }
+
+        public Task SetNormalizedUserNameAsync(ApplicationUser user, string normalizedName, CancellationToken cancellationToken)
+        {
+            user.NormalizedUserName = normalizedName;
+            return Task.CompletedTask;
+        }
+
+        public Task SetPasswordHashAsync(ApplicationUser user, string passwordHash, CancellationToken cancellationToken)
+        {
+            user.PasswordHash = passwordHash;
+            return Task.CompletedTask;
+        }
+
+        public void Dispose()
+        {
+
+        }
+
+        #region Not implemented
+        public Task AddToRoleAsync(ApplicationUser user, string roleName, CancellationToken cancellationToken)
+        {
             throw new System.NotImplementedException();
         }
 
-        public Task<IdentityResult> DeleteAsync(IdentityUser user, CancellationToken cancellationToken)
+        public Task<IdentityResult> CreateAsync(IdentityRole role, CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<IdentityResult> DeleteAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
@@ -65,19 +87,9 @@ namespace Fun.Api.Identity
             throw new System.NotImplementedException();
         }
 
-        public void Dispose()
-        {
-
-        }
-
-        public Task<IdentityUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public Task<ApplicationUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
-        }
-
-        public Task<IdentityUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
-        {
-            return _datacontextWrapper.ExecuteQuery(new FindUserByNameQuery { NormalizedUserName = normalizedUserName });
         }
 
         public Task<string> GetNormalizedRoleNameAsync(IdentityRole role, CancellationToken cancellationToken)
@@ -85,14 +97,9 @@ namespace Fun.Api.Identity
             throw new System.NotImplementedException();
         }
 
-        public Task<string> GetNormalizedUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
+        public Task<string> GetNormalizedUserNameAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
-        }
-
-        public Task<string> GetPasswordHashAsync(IdentityUser user, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(user.PasswordHash);
         }
 
         public Task<string> GetRoleIdAsync(IdentityRole role, CancellationToken cancellationToken)
@@ -105,37 +112,22 @@ namespace Fun.Api.Identity
             throw new System.NotImplementedException();
         }
 
-        public Task<IList<string>> GetRolesAsync(IdentityUser user, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(new List<string> { "Test123", "Pietje" } as IList<string>);
-        }
-
-        public Task<string> GetUserIdAsync(IdentityUser user, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(user.Id);
-        }
-
-        public Task<string> GetUserNameAsync(IdentityUser user, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(user.UserName);
-        }
-
-        public Task<IList<IdentityUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+        public Task<IList<ApplicationUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> HasPasswordAsync(IdentityUser user, CancellationToken cancellationToken)
+        public Task<bool> HasPasswordAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> IsInRoleAsync(IdentityUser user, string roleName, CancellationToken cancellationToken)
+        public Task<bool> IsInRoleAsync(ApplicationUser user, string roleName, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task RemoveFromRoleAsync(IdentityUser user, string roleName, CancellationToken cancellationToken)
+        public Task RemoveFromRoleAsync(ApplicationUser user, string roleName, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
@@ -145,29 +137,17 @@ namespace Fun.Api.Identity
             throw new System.NotImplementedException();
         }
 
-        public Task SetNormalizedUserNameAsync(IdentityUser user, string normalizedName, CancellationToken cancellationToken)
-        {
-            user.NormalizedUserName = normalizedName;
-            return Task.CompletedTask;
-        }
-
-        public Task SetPasswordHashAsync(IdentityUser user, string passwordHash, CancellationToken cancellationToken)
-        {
-            user.PasswordHash = passwordHash;
-            return Task.CompletedTask;
-        }
-
         public Task SetRoleNameAsync(IdentityRole role, string roleName, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task SetUserNameAsync(IdentityUser user, string userName, CancellationToken cancellationToken)
+        public Task SetUserNameAsync(ApplicationUser user, string userName, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<IdentityResult> UpdateAsync(IdentityUser user, CancellationToken cancellationToken)
+        public Task<IdentityResult> UpdateAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }
@@ -186,5 +166,7 @@ namespace Fun.Api.Identity
         {
             throw new System.NotImplementedException();
         }
+
+        #endregion
     }
 }

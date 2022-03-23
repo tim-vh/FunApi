@@ -17,7 +17,6 @@ using NSwag;
 using NSwag.Generation.Processors.Security;
 using Provocq;
 using System;
-using System.Linq;
 using System.Text;
 
 
@@ -38,12 +37,12 @@ namespace Fun.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = false;
             });
 
-            services.AddTransient<IUserStore<IdentityUser>, FunUserStore>();
+            services.AddTransient<IUserStore<ApplicationUser>, FunUserStore>();
             services.AddTransient<IRoleStore<IdentityRole>, FunUserStore>();
 
             services.AddAuthentication(options =>
@@ -67,7 +66,7 @@ namespace Fun.Api
             services.AddCors(options => options.AddPolicy(_funApiCorsPolicy, builder =>
             {
                 builder.WithOrigins("*")
-                        .AllowAnyMethod()
+                        .WithMethods("GET")
                         .AllowAnyHeader();
             }));
 
@@ -82,7 +81,7 @@ namespace Fun.Api
             services.AddSingleton<BlockingDataHandler<IdentityDataContext>>();
             services.AddSignalR();
             services.AddHttpContextAccessor();
-            
+
             services.AddControllers();
 
             services.AddEndpointsApiExplorer();
@@ -97,7 +96,7 @@ namespace Fun.Api
                 });
 
                 document.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("Bearer"));
-            });            
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

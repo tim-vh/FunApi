@@ -1,17 +1,17 @@
 ﻿using Fun.Api.DataModel;
-using Microsoft.AspNetCore.Identity;
+using Fun.Api.Identity;
 using Provocq;
 using System.Linq;
 
 namespace Fun.Api.Queries
 {
-    public class FindUserByNameQuery : IQuery<IdentityDataContext, IdentityUser>
+    public class FindUserByNameQuery : IQuery<IdentityDataContext, ApplicationUser>
     {
 
         public string NormalizedUserName { get; set; }
 
 
-        public IdentityUser Execute(IdentityDataContext context)
+        public ApplicationUser Execute(IdentityDataContext context)
         {
             return context.Users.FirstOrDefault(u => u.NormalizedUserName == NormalizedUserName);
         }

@@ -1,12 +1,12 @@
 ﻿using Fun.Api.DataModel;
-using Microsoft.AspNetCore.Identity;
+using Fun.Api.Identity;
 using Provocq;
 
 namespace Fun.Api.Commands
 {
     public class CreateUserCommand : ICommand<IdentityDataContext>
     {
-        public IdentityUser User { get; set; }
+        public ApplicationUser User { get; set; }
 
         public void Execute(IdentityDataContext context)
         {

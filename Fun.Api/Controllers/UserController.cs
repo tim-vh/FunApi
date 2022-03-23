@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Fun.Api.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -13,10 +13,10 @@ namespace Fun.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public UserController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -26,7 +26,7 @@ namespace Fun.Api.Controllers
         public async Task<IActionResult> Authenticate([FromBody] LoginCredentials loginCredentials)
         {
             var user = await _signInManager.UserManager.FindByNameAsync(loginCredentials.Username);
-            if (user != null)
+            if (user != null && user.IsEnabled)
             {
                 var signInResult = await _signInManager.CheckPasswordSignInAsync(user, loginCredentials.Password, false);
 
@@ -45,7 +45,11 @@ namespace Fun.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] UserRegistration userRegistration)
         {
-            var user = new IdentityUser(userRegistration.Username);
+            var user = new ApplicationUser(userRegistration.Username)
+            {
+                IsEnabled = false
+            };
+
             var result = await _userManager.CreateAsync(user, userRegistration.Password);
             
             if (result.Succeeded)

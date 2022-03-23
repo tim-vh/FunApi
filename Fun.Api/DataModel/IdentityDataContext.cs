@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Fun.Api.Identity;
 using System.Collections.Generic;
 
 namespace Fun.Api.DataModel
@@ -7,9 +7,9 @@ namespace Fun.Api.DataModel
     {
         public IdentityDataContext()
         {
-            Users = new List<IdentityUser>();
+            Users = new List<ApplicationUser>();
         }
 
-        public ICollection<IdentityUser> Users { get; }
+        public ICollection<ApplicationUser> Users { get; set; }
     }
 }
