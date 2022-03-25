@@ -36,7 +36,7 @@ namespace Fun.Api.Identity
 
         public Task<IList<string>> GetRolesAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
-            return Task.FromResult<IList<string>>(new List<string>());
+            return Task.FromResult<IList<string>>(user.Roles);
         }
 
         public Task<string> GetUserIdAsync(ApplicationUser user, CancellationToken cancellationToken)
@@ -59,6 +59,13 @@ namespace Fun.Api.Identity
         {
             user.PasswordHash = passwordHash;
             return Task.CompletedTask;
+        }
+
+        public async Task<IdentityResult> UpdateAsync(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            await _datacontextWrapper.ExecuteCommand(new UpdateUserCommand { User = user });
+
+            return IdentityResult.Success;
         }
 
         public void Dispose()
@@ -143,11 +150,6 @@ namespace Fun.Api.Identity
         }
 
         public Task SetUserNameAsync(ApplicationUser user, string userName, CancellationToken cancellationToken)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<IdentityResult> UpdateAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
             throw new System.NotImplementedException();
         }

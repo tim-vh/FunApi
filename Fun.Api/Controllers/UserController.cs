@@ -1,4 +1,5 @@
 ﻿using Fun.Api.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -47,11 +48,13 @@ namespace Fun.Api.Controllers
         {
             var user = new ApplicationUser(userRegistration.Username)
             {
-                IsEnabled = false
+                IsEnabled = false,
             };
 
+            user.Roles.Add("User");
+
             var result = await _userManager.CreateAsync(user, userRegistration.Password);
-            
+
             if (result.Succeeded)
             {
                 return Ok();
@@ -62,17 +65,33 @@ namespace Fun.Api.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPatch("{username}")]
+        public async Task<IActionResult> SetIsEnabled(string username, [FromBody] bool isEnabled)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.IsEnabled = isEnabled;
+            await _userManager.UpdateAsync(user);
+
+            return Ok();
+        }
+
         private static string GenerateTokenFromClaims(ClaimsPrincipal claimsPrincipal)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claimsPrincipal.Claims),
-                Expires = DateTime.UtcNow.AddMinutes(10),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Startup.Key), SecurityAlgorithms.HmacSha256Signature),    
-                
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Startup.Key), SecurityAlgorithms.HmacSha256Signature),
+
             };
-           
+
             var securitytoken = tokenHandler.CreateToken(tokenDescriptor);
             var token = tokenHandler.WriteToken(securitytoken);
             return token;
