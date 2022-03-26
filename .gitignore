@@ -359,3 +359,4 @@ Fun.Api/wwwroot/videos/*
 # www root lib folder
 Fun.Api/wwwroot/lib/*
 /Fun.Api/userdata.json
+/Fun.Api/youtubevideos.json

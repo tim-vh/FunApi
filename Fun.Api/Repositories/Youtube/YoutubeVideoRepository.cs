@@ -1,30 +1,45 @@
 ﻿using Fun.Api.Model;
+using Fun.Api.Repositories.Youtube.Commands;
 using Fun.Api.Repositories.Youtube.Model;
+using Fun.Api.Repositories.Youtube.Queries;
+using Provocq;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Fun.Api.Repositories.Youtube
 {
     public class YoutubeVideoRepository : IVideoRepository
     {
-        public Video GetVideo(string url)
+        private readonly BlockingDataHandler<YoutubeVideoDataContext> _datacontextWrapper;
+
+        public YoutubeVideoRepository(BlockingDataHandler<YoutubeVideoDataContext> datacontextWrapper)
         {
-            return new YoutubeVideo
-            {
-                Name = "YT test",
-                Url = "https://www.youtube.com/watch?v=xuYRglBC-Vs&list=RDxuYRglBC-Vs&start_radio=1"
-            };
+            _datacontextWrapper = datacontextWrapper;
         }
 
-        public IEnumerable<Video> GetVideos()
+        public string Type => "Youtube";
+
+        public async Task<Video> GetVideo(string url)
         {
-            return new List<Video>
+            return await _datacontextWrapper.ExecuteQuery(new GetVideoQuery { Url = url });
+        }
+
+        public async Task<IEnumerable<Video>> GetVideos()
+        {
+            return await _datacontextWrapper.ExecuteQuery(new GetVideosQuery());            
+        }
+
+        public async Task AddVideo(Video video)
+        {
+            await _datacontextWrapper.ExecuteCommand(new AddVideoCommand
             {
-                new YoutubeVideo
+                YoutubeVideo = new YoutubeVideo
                 {
-                    Name = "YT test",
-                    Url = "https://www.youtube.com/watch?v=xuYRglBC-Vs&list=RDxuYRglBC-Vs&start_radio=1"
+                    Name = video.Name,
+                    Url = video.Url
+
                 }
-            };
+            });
         }
     }
 }

@@ -10,7 +10,6 @@ namespace Fun.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class VideoController : ControllerBase
     {
         private readonly IVideoCatalog _videoCatalog;
@@ -51,6 +50,28 @@ namespace Fun.Api.Controllers
         {
             var videos = _videoCatalog.GetVideos();
             return Ok(videos);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public ActionResult AddVideo([FromBody] AddVideoRequest addVideoRequest)
+        {
+            var video = new Video()
+            {
+                Name = addVideoRequest.Name,
+                Url = addVideoRequest.Url
+            };
+
+            _videoCatalog.AddVideo(video);
+
+            return Ok();
+        }
+
+        public class AddVideoRequest
+        {
+            public string Name { get; set; }
+
+            public string Url { get; set; }
         }
     }
 }

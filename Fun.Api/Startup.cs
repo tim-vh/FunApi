@@ -77,8 +77,13 @@ namespace Fun.Api
             services.AddScoped<IVideoRepository, WwwrootVideoRepository>();
             services.AddScoped<IVideoRepository, YoutubeVideoRepository>();
             services.AddScoped<GetVideosFromWwwrootQuery, GetVideosFromWwwrootQuery>();
+
             services.AddTransient<IPersistor<IdentityDataContext>>(_ => new JsonFilePersistor<IdentityDataContext>("userdata.json"));
             services.AddSingleton<BlockingDataHandler<IdentityDataContext>>();
+
+            services.AddTransient<IPersistor<YoutubeVideoDataContext>>(_ => new JsonFilePersistor<YoutubeVideoDataContext>("youtubevideos.json"));
+            services.AddSingleton<BlockingDataHandler<YoutubeVideoDataContext>>();
+
             services.AddSignalR();
             services.AddHttpContextAccessor();
 

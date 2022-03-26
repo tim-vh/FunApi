@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Fun.Api.Model
 {
     public interface IVideoRepository
     {
-        IEnumerable<Video> GetVideos();
+        public string Type { get; }
 
-        Video GetVideo(string url);
+        Task<IEnumerable<Video>> GetVideos();
+
+        Task<Video> GetVideo(string url);
+
+        Task AddVideo(Video video);
     }
 }

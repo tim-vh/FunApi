@@ -7,5 +7,6 @@ namespace Fun.Api.Model
         IEnumerable<Video> GetVideos();
 
         Video GetVideo(string url);
+        void AddVideo(Video video);
     }
 }
