@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Fun.Api.Controllers
@@ -16,6 +17,7 @@ namespace Fun.Api.Controllers
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private static byte[] Key = Encoding.UTF8.GetBytes("Test123Test123Test123Test123Test123Test123Test123");
 
         public UserController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
@@ -88,7 +90,7 @@ namespace Fun.Api.Controllers
             {
                 Subject = new ClaimsIdentity(claimsPrincipal.Claims),
                 Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Startup.Key), SecurityAlgorithms.HmacSha256Signature),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Key), SecurityAlgorithms.HmacSha256Signature),
 
             };
 

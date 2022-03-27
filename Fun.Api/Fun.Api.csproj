@@ -16,4 +16,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\videos\thumbnails\" />
   </ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="Fun.Api.IntegrationTests" />
+	</ItemGroup>
 </Project>
