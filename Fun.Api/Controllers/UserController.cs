@@ -26,7 +26,7 @@ namespace Fun.Api.Controllers
         }
 
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] LoginCredentials loginCredentials)
+        public async Task<ActionResult<AuthenticationResult>> Authenticate([FromBody] LoginCredentials loginCredentials)
         {
             var user = await _signInManager.UserManager.FindByNameAsync(loginCredentials.Username);
             if (user != null && user.IsEnabled)
@@ -38,7 +38,7 @@ namespace Fun.Api.Controllers
                     var userprincipal = await _signInManager.CreateUserPrincipalAsync(user);
 
                     var token = GenerateTokenFromClaims(userprincipal);
-                    return Ok(token);
+                    return Ok(new AuthenticationResult { Token = token });
                 }
             }
 
@@ -111,6 +111,11 @@ namespace Fun.Api.Controllers
             public string Username { get; set; }
 
             public string Password { get; set; }
+        }
+
+        public class AuthenticationResult
+        {
+            public string Token { get; set; }
         }
     }
 }

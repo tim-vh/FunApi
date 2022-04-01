@@ -1,0 +1,33 @@
+{
+  "$id": "1",
+  "Users": {
+    "$id": "2",
+    "$values": [
+      {
+        "$id": "7",
+        "IsEnabled": true,
+        "Roles": {
+          "$id": "8",
+          "$values": [
+            "User"
+          ]
+        },
+        "Id": "9e1f1cf3-dada-4275-81ef-81fa546afebf",
+        "UserName": "testuser1",
+        "NormalizedUserName": "TESTUSER1",
+        "Email": null,
+        "NormalizedEmail": null,
+        "EmailConfirmed": false,
+        "PasswordHash": "AQAAAAEAACcQAAAAEFg\u002Bfm56PJLJ9hNr37xEjRukigir/RaOIjbBcjdnHVpLVPH8WOJeH8TiIHaFSqpqtQ==",
+        "SecurityStamp": "033d74c0-0506-4c77-bc6f-548b4e6581be",
+        "ConcurrencyStamp": "13477025-de7e-4c0f-8357-91679c3cb9e2",
+        "PhoneNumber": null,
+        "PhoneNumberConfirmed": false,
+        "TwoFactorEnabled": false,
+        "LockoutEnd": null,
+        "LockoutEnabled": false,
+        "AccessFailedCount": 0
+      }
+    ]
+  }
+}

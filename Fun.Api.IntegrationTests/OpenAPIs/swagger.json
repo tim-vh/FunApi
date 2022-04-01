@@ -66,10 +66,9 @@
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "$ref": "#/components/schemas/AuthenticationResult"
                 }
               }
             }
@@ -280,6 +279,16 @@
   },
   "components": {
     "schemas": {
+      "AuthenticationResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "LoginCredentials": {
         "type": "object",
         "additionalProperties": false,

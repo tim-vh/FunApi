@@ -12,7 +12,8 @@ namespace Fun.Api.IntegrationTests.Helpers
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             var config = new List<KeyValuePair<string, string>>();
-            config.Add(KeyValuePair.Create("youtubeVideosFile", Path.GetFullPath("TestData/youtubevideos.json")));
+            config.Add(KeyValuePair.Create("youtubeVideosFile", Path.GetFullPath("TestData/youtubevideos.json")));            
+            config.Add(KeyValuePair.Create("userDataFile", Path.GetFullPath("TestData/userdata.json")));
 
             builder.ConfigureAppConfiguration(test => test.AddInMemoryCollection(config));
         }
