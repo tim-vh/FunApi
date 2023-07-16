@@ -20,7 +20,7 @@
     "Fun.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "VideoPlayer.html",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

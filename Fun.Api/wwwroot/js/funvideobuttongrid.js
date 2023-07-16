@@ -80,7 +80,7 @@
             let button = buttonTemplate.content.cloneNode(true).firstElementChild;
             button.title = video.name;
             button.thumbnailUrl = video.thumbnail;
-            button.videoUrl = video.url;
+            button.videoFileName = video.filename;
             button.apiBaseUrl = this.apiBaseUrl;
             this.buttonContainer.appendChild(button);
         });

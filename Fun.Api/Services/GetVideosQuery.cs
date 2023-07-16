@@ -24,12 +24,12 @@ namespace Fun.Api.Services
             var rootFolder = _configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
             var test = WebHostDefaults.WebRootKey;
             var files = Directory.GetFiles(Path.Combine(rootFolder, "wwwroot/videos"), "*.mp4");
-
             var baseUrl = _httpContextAccessor.HttpContext.Request.Scheme + "://" + _httpContextAccessor.HttpContext.Request.Host;
 
             return files.Select(f => new Video
             {
                 Url = $"{baseUrl}/videos/{Path.GetFileName(f)}",
+                Filename = Path.GetFileName(f),
                 Thumbnail = $"{baseUrl}/videos/{Path.GetFileName(f)}.jpeg",
                 Name = Path.GetFileNameWithoutExtension(f)
                         .Replace("_", " ")

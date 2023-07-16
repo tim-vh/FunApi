@@ -50,7 +50,6 @@ namespace Fun.Api
             }
 
             app.UseCors(FunApiCorsPolicy);
-
             app.UseRouting();
 
             app.UseAuthentication();

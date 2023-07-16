@@ -15,7 +15,9 @@ namespace Fun.Api
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
 
             LogManager.Configuration = new NLogLoggingConfiguration(config.GetSection("NLog"));
             var logger = NLogBuilder.ConfigureNLog(LogManager.Configuration).GetCurrentClassLogger();

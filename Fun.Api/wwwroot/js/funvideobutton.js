@@ -6,8 +6,8 @@
     get apiBaseUrl() { return this.getAttribute("apiBaseUrl"); }
     set apiBaseUrl(value) { this.setAttribute("apiBaseUrl", value); }
 
-    get videoUrl() { return this.getAttribute("videourl"); }
-    set videoUrl(value) { this.setAttribute("videourl", value); }
+    get videoFileName() { return this.getAttribute("videoFileName"); }
+    set videoFileName(value) { this.setAttribute("videoFileName", value); }
 
     get title() { return this.getAttribute("title"); }
     set title(value) { this.setAttribute("title", value); }
@@ -24,11 +24,11 @@
     }
 
     videoButton_onclick = () => {
-        this.sendPlayVideoRequest(this.videoUrl);
+        this.sendPlayVideoRequest(this.videoFileName);
     }
 
-    async sendPlayVideoRequest(videoUrl) {
-        let url = this.apiBaseUrl + "api/video/play/" + encodeURIComponent(videoUrl);
+    async sendPlayVideoRequest(videoFileName) {
+        let url = this.apiBaseUrl + "api/video/play/" + videoFileName;
         await fetch(url);
     }
 }

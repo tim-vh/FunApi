@@ -3,7 +3,10 @@ using Fun.Api.Services;
 using Fun.Api.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 using System.Web;
 
 namespace Fun.Api.Controllers
@@ -13,29 +16,32 @@ namespace Fun.Api.Controllers
     public class VideoController : ControllerBase
     {
         private readonly IGetVideosQuery _getVideosQuery;
-        private readonly IVideoUrlValidator _videoUrlValidator;
         private readonly IHubContext<VideoHub> _videoHubContext;
+        private readonly ILogger<VideoController> _logger;
 
         public VideoController(
             IGetVideosQuery getVideosQuery,
-            IVideoUrlValidator videoUrlValidator,
-            IHubContext<VideoHub> videoHubContext)
+            IHubContext<VideoHub> videoHubContext,
+            ILogger<VideoController> logger)
         {
             _getVideosQuery = getVideosQuery ?? throw new System.ArgumentNullException(nameof(getVideosQuery));
-            _videoUrlValidator = videoUrlValidator ?? throw new System.ArgumentNullException(nameof(videoUrlValidator));
             _videoHubContext = videoHubContext ?? throw new System.ArgumentNullException(nameof(videoHubContext));
+            _logger = logger;
         }
 
-        [HttpGet("play/{url}")]
-        public ActionResult Play(string url)
+        [HttpGet("play/{filename}")]
+        public ActionResult Play(string filename)
         {
-            url = HttpUtility.UrlDecode(url);
-            if (_videoUrlValidator.Validate(url))
+            var video = _getVideosQuery.Execute().FirstOrDefault(v => v.Filename == filename);
+
+            if (video != null)
             {
-                _videoHubContext.Clients.All.SendAsync("PlayVideo", url).ConfigureAwait(false);
+                _videoHubContext.Clients.All.SendAsync("PlayVideo", video.Url).ConfigureAwait(false);
 
                 return new NoContentResult();
             }
+
+            _logger.LogInformation($"Play video reiceived an invalid url: {filename}");
 
             return NotFound();
         }
